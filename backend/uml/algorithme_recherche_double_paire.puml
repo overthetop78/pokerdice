@@ -1,0 +1,30 @@
+@startuml Algorithme : Recherche Paire
+actor user as user
+participant front as front
+control server as server
+database bdd as bdd
+
+server --> server : vérifie la somme de la paire la plus haute
+alt si un joueur a une somme la plus haute sur sa paire avec la valeur la plus forte
+    server --> bdd : ajoute 40 points pour le joueur gagnant dans la table LobbyUsers
+    server --> bdd : ajoute 1 au nombre de win pour le gagnant et 1 pour le nombre de lose des perdants
+    server --> front : envoie le résultat au front (gagnant, valeur de la combinaison, valeur des dés)
+else si deux ou plus ont une somme de la paire la plus haute identique
+    server --> server : vérifie la somme de la seconde paire
+    alt si un joueur a une somme la plus haute sur sa seconde paire
+        server --> bdd : ajoute 40 points pour le joueur gagnant dans la table LobbyUsers
+        server --> bdd : ajoute 1 au nombre de win pour le gagnant et 1 pour le nombre de lose des perdants
+        server --> front : envoie le résultat au front (gagnant, valeur de la combinaison, valeur des dés)
+    else si deux joueurs ou plus ont une somme de la seconde paire identique
+        alt si le dernier dé  a une valeur plus forte en retirant la double paire dans la liste des dés
+            server --> bdd : Ajoute 40 points pour le joueur gagnant dans la table LobbyUsers
+            server --> bdd : ajoute 1 au nombre de win pour le gagnant et 1 pour le nombre de lose des perdants
+            server --> front : envoie le résultat au front (gagnant, valeur de la combinaison, valeur des dés)
+        else si les joueurs ont les mêmes dés
+            server --> bdd : ajoute 1 au nombre de draw pour les joueurs en égalité et 1 au lose pour les perdants
+            server --> front : envoie le résultat au front (égalité, valeur de la combinaison, valeur des dés)
+        end
+    end
+end
+
+@enduml

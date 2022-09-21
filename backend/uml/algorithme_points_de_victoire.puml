@@ -1,0 +1,26 @@
+@startuml Algorithme : Points de victoire
+actor user as user
+participant front as front
+control server as server
+database bdd as bdd
+
+alt si le joueur gagnant a une Paire
+    server --> bdd : ajoute 20 points pour le joueur dans la table LobbyUsers
+else si le joueur gagnant a une Double Paire
+    server --> bdd : ajoute 40 points pour le joueur dans la table LobbyUsers
+else si le joueur gagnant a un Brelan
+    server --> bdd : ajoute 50 points pour le joueur dans la table LobbyUsers
+else si le joueur gagnant a un Carré
+    server --> bdd : ajoute 100 points pour le joueur dans la table LobbyUsers
+else si le joueur gaggnant a un Full
+    server --> bdd : ajoute 150 points pour le joueur dans la table LobbyUsers
+else si le joueur gagnant a une Petite Suite
+    server --> bdd : ajoute 200 points pour le joueur dans la table LobbyUsers
+else si le joueur gagnant a une Grande Suite
+    server --> bdd : ajoute 250 points pour le joueur dans la table LobbyUsers
+else si le joueur gagnant a une Quinte
+    server --> bdd : ajoute 300 points pour le joueur dans la table LobbyUsers
+end
+server --> bdd : ajoute 1 au nombre de win pour le gagnant et 1 pour le nombre de lose des perdants
+server --> front : envoie le résultat au front (gagnant, valeur de la combinaison, valeur des dés)
+@enduml

@@ -1,0 +1,39 @@
+@startuml Algorithme : Recherche du Gagnant si Egalité
+actor user as user
+participant front as front
+control server as server
+database bdd as bdd
+alt si les joueurs ont une Quinte
+    note over of server
+        le serveur vérifie si les joueurs ont une Quinte
+    end note
+else si les joueurs ont un Carré
+    note over of server
+        le serveur vérifie si les joueurs ont un Carré
+    end note
+else si les joueurs ont un Full
+    note over of server
+        le serveur vérifie si les joueurs ont un Full
+    end note
+else si les joueurs ont un Brelan
+    note over of server
+        le serveur vérifie si les joueurs ont un Brelan
+    end note
+else si les joueurs ont une Double Paire
+    note over of server
+        le serveur vérifie si les joueurs ont une Double Paire
+    end note
+else si les joueurs ont une Paire
+    note over of server
+        le serveur vérifie si les joueurs ont une Paire
+    end note
+else si les joueurs ont une Grande Suite
+    note over of server
+        le serveur vérifie si les joueurs ont une Grande Suite
+    end note
+else si les joueurs ont une Petite Suite
+    note over of server
+        le serveur vérifie si les joueurs ont une Petite Suite
+    end note
+end
+@enduml

@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  mariadb:
+    container_name: pokerdice-db
+    image: mariadb:latest
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    networks:
+      - back-end
+    ports:
+      - ${MYSQL_PORT_OUT}:${MYSQL_PORT_IN}
+
+  adminer:
+    container_name: pokerdice-adminer
+    image: adminer
+    env_file:
+      - .env
+    networks:
+      - back-end
+    depends_on:
+      - mariadb
+    ports:
+      - ${ADMINER_PORT_OUT}:${ADMINER_PORT_IN}
+
+  dev:
+    container_name: pokerdice-dev
+    image: pokerdice-dev:1.0.0
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - back-end
+    command: npm run start:dev
+    depends_on:
+      - mariadb
+    ports:
+      - ${APP_PORT_OUT}:${APP_PORT_IN}
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+networks:
+  back-end:

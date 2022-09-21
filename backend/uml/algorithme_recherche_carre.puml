@@ -1,0 +1,21 @@
+@startuml Algorithme : Recherche Paire
+actor user as user
+participant front as front
+control server as server
+database bdd as bdd
+server --> server : vérifie la somme du Carré
+alt si un joueur a une somme plus haute
+    server --> bdd : ajoute 100 points pour le joueur gagnant dans la table LobbyUsers
+    server --> bdd : ajoute 1 au nombre de win pour le gagnant et 1 pour le nombre de lose des perdants
+    server --> front : envoie le résultat au front (gagnant, valeur de la combinaison, valeur des dés)
+else si deux joueurs ou plus ont une somme du Carré identique
+    alt si le dernier dé d'un joueur a une valeur la plus forte en retirant le carré dans la liste
+        server --> bdd : Ajoute 100 points pour le joueur gagnant dans la table LobbyUsers
+        server --> bdd : ajoute 1 au nombre de win pour le gagnant et 1 pour le nombre de lose des perdants
+        server --> front : envoie le résultat au front (gagnant, valeur de la combinaison, valeur des dés)
+    else si le dernier dé des joueurs est identique
+        server --> bdd : ajoute 1 au nombre de draw pour les joueurs en égalité et 1 au lose pour les perdants
+        server --> front : envoie le résultat au front (égalité, valeur de la combinaison, valeur des dés)
+    end
+end
+@enduml

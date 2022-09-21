@@ -1,0 +1,22 @@
+@startuml Algorithme
+actor user as user
+participant front as front
+control server as server
+database bdd as bdd
+group fin de tour
+    note right of server
+        voir UML algorithme : Calcul des dés des joueurs
+    end note
+    server --> server : cherche dans le tableau quel joueur à la plus grosse valeur
+    alt si un joueur a une plus grosse valeur
+        note left of server
+            voir UML algorithme : Points de victoire
+        end note
+    else si deux joueurs ou plus ont les mêmes plus grosses valeurs
+        note left of server
+            voir UML algorithme : Recherche du gagnant (en cas d'égalité)
+        end note
+        end
+    end
+end
+@enduml

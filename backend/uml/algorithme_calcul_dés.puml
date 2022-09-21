@@ -1,0 +1,56 @@
+@startuml Algorithme : Calcul des dés
+actor user as user
+participant front as front
+control server as server
+database bdd as bdd
+group fin de tour
+    front --> server : le dernier joueur du tour à joué
+    loop calcul des dés de chaque joueur
+        server --> server : créé un tableau d'objet joueur
+        note right of server
+            joueurs = [{
+                idJoueur: Int,
+                dice: [dé1: Int, dé2: Int, dé3: Int, dé4: Int, dé5: Int]
+                result: Enum (PAIRE, DOUBLE_PAIRE, BRELAN, CARRE, FULL, PETITE_SUITE, GRANDE_SUITE, QUINTE)
+                paire1: Int # valeur du dé de la première paire (le plus grand, utilisé pour le full)
+                paire2: Int # valeur du dé de la deuxième paire (le plus petit, en cas de double paire)
+                brelan: Int # valeur du dé du brelan (utilisé pour le full)
+                carre: Int # valeur du dé du carré 
+                petitesuite: Int # valeur du dé le plus haut de la suite 
+                grandesuite: Int # valeur du dé le plus haut de la suite
+                quinte: Int # valeur du dé de la quinte
+            }]
+            Permet de stocker les résultats de chaque joueur et de rechercher rapidement le gagnant
+        end note
+        server --> server : Ajoute dans un tableau les valeurs de chaque dés (dé1, dé2, dé3, dé4, dé5)
+        server --> server : compare les valeurs des dés 
+        alt Quinte (Enum : QUINTE) Si 5 dés sont identiques
+            server --> server : Ajoute dans le champs résultat la valeur "Quinte"
+            server --> server : Ajoute dans le champs quinte la valeur du dé
+        else Carré (Enum : CARRE)
+            server --> server : Ajoute dans le champs résultat la valeur "Carré"
+            server --> server : Ajoute dans le champs carre la valeur du dé
+        else Full (Enum : FULL)
+            server --> server : Ajoute dans le champs résultat la valeur "Full"
+            server --> server : Ajoute dans le champs breland la valeur du dé du brelan du full
+            server --> server : Ajoute dans le champs paire1 la valeur du dé de la paire du full
+        else Brelan (Enum : BRELAN)
+            server --> server : Ajoute dans le champs résultat la valeur "Brelan"
+            server --> server : Ajoute dans le champs brelan la valeur du dé
+        else Double Paire (Enum : DOUBLE_PAIRE)
+            server --> server : Ajoute dans le champs résultat la valeur "Double Paire"
+            server --> server : Ajoute dans le champs paire1 la valeur du dé de la première paire (la plus grande)
+            server --> server : Ajoute dans le champs paire2 la valeur du dé de la deuxième paire (la plus petite)
+        else Paire (Enum : PAIRE)
+            server --> server : Ajoute dans le champs résultat la valeur "Paire"
+            server --> server : Ajoute dans le champs paire1 la valeur du dé de la paire
+        else Petite Suite (Enum : PETITE_SUITE)
+            server --> server : Ajoute dans le champs résultat la valeur "Petite Suite"
+            server --> server : Ajoute dans le champs petitesuite la valeur du dé le plus haut de la suite
+        else Grande Suite (Enum : GRANDE_SUITE)
+            server --> server : Ajoute dans le champs résultat la valeur "Grande Suite"
+            server --> server : Ajoute dans le champs grandesuite la valeur du dé le plus haut de la suite
+        end
+    end
+end
+@enduml

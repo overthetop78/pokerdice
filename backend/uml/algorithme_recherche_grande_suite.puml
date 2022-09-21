@@ -1,0 +1,15 @@
+@startuml Algorithme : Recherche Paire
+actor user as user
+participant front as front
+control server as server
+database bdd as bdd
+server --> server : vérifie la valeur du dé le plus haut de la Grande Suite
+alt si un joueur a une valeur plus haute
+    server --> bdd : ajoute 300 points pour le joueur gagnant dans la table LobbyUsers
+    server --> bdd : ajoute 1 au nombre de win pour le gagnant et 1 pour le nombre de lose des perdants
+    server --> front : envoie le résultat au front (gagnant, valeur de la combinaison, valeur des dés)
+else si deux joueurs ou plus ont une valeur du dé le plus haut identique
+    server --> bdd : ajoute 1 au nombre de draw pour les joueurs en égalité et 1 au lose pour les perdants
+    server --> front : envoie le résultat au front (égalité, valeur de la combinaison, valeur des dés)
+end
+@enduml

@@ -1,0 +1,58 @@
+@startuml Diagramme de Classes 
+
+class User {
+-id: Integer
++username: String
++email: String
+-password: String
+-birthday: Date
++score: Integer 
++win: Integer
++lose: Integer
++draw: Integer
+
++getUsers(): User[]
++getUser(id: Integer): User
++createUser(username: String, email:String, password:String, birthday: Date())
++updateUser(id: Integer, username:String, password: String, birthday: Date()): User
++deleteUser(id: Integer)
+}
+
+Auth -- User
+
+class Auth {
+-email: String
+-password: String
+
++Login(email: String, password: String): String
+}
+
+class Lobby {
++id: Integer
++name: String
++owner: User
++password: String
++lobbyUsers: LobbyUser[]
+
++createLobby(name: String, owner: User, password: String): Lobby
++getAllLobby(): Lobby[]
++getNotFullLobby(): Lobby[]
++setLobby(id: Integer, name: String, owner: User, Users: User[])
+
+}
+LobbyUser *-- Lobby
+LobbyUser --o User
+
+class LobbyUser {
++user: User
++tour: Integer
++points: Integer
++win: Integer
++draw: Integer
++lose: Integer
++startPlay: Enum {ACCEPTED, WAITING_TOUR, WAITING_PLAY, PLAYING, FINISHED}
+}
+
+@enduml
+
+
