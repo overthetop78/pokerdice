@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { LobbyModule } from './lobby/lobby.module';
 import { LobbyUserModule } from './lobby-user/lobby-user.module';
 import { CoreModule } from './core/core.module';
+import { DicesModule } from './dices/dices.module';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { CoreModule } from './core/core.module';
     database: process.env.MYSQL_DATABASE || 'pokerdice',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
-  }), UserModule, AuthModule, LobbyModule, LobbyUserModule, CoreModule],
+  }), UserModule, AuthModule, LobbyModule, LobbyUserModule, CoreModule, DicesModule],
   controllers: [AppController],
   providers: [AppService],
 })

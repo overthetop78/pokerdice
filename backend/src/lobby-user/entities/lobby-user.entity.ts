@@ -1,6 +1,7 @@
+import { Dice } from "src/dices/entities/dice.entity";
 import { Lobby } from "src/lobby/entities/lobby.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { ValidPlay } from "../dto/lobby-user.dto";
 
 @Entity()
@@ -32,5 +33,8 @@ export class LobbyUser {
 
     @ManyToOne(() => Lobby, lobby => lobby.users, { orphanedRowAction: "delete", onDelete: "CASCADE", onUpdate: "CASCADE" })
     lobby: Lobby;
+
+    @OneToMany(() => Dice, dice => dice.lobbyUser, { cascade: true, eager: true })
+    dices: Dice[];
 
 }
