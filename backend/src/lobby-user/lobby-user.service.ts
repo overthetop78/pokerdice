@@ -7,12 +7,10 @@ import { LobbyUser } from './entities/lobby-user.entity';
 
 @Injectable()
 export class LobbyUserService {
-
   constructor(
     @InjectRepository(LobbyUser)
     private lobbyUserRepository: Repository<LobbyUser>,
   ) {}
-
 
   async create(createLobbyUserDto: CreateLobbyUserDto) {
     try {
@@ -25,8 +23,10 @@ export class LobbyUserService {
 
   async findAll() {
     try {
-    const lobbyUsers = await this.lobbyUserRepository.find({ relations: ['user', 'lobby'] });
-    return lobbyUsers;
+      const lobbyUsers = await this.lobbyUserRepository.find({
+        relations: ['user', 'lobby'],
+      });
+      return lobbyUsers;
     } catch (error) {
       return error;
     }
@@ -34,7 +34,10 @@ export class LobbyUserService {
 
   async findOne(id: number): Promise<LobbyUser> {
     try {
-      const lobbyUser = await this.lobbyUserRepository.findOne({ relations: ['user', 'lobby'], where: { id: id } });
+      const lobbyUser = await this.lobbyUserRepository.findOne({
+        relations: ['user', 'lobby'],
+        where: { id: id },
+      });
       return lobbyUser;
     } catch (error) {
       return error;
@@ -44,25 +47,28 @@ export class LobbyUserService {
   async update(id: number, updateLobbyUserDto: UpdateLobbyUserDto) {
     const lobbyUser = await this.lobbyUserRepository.findOne({
       relations: ['user', 'lobby'],
-      where: { id: id }
-    });    
+      where: { id: id },
+    });
     const updatedLobbyUser = Object.assign(lobbyUser, updateLobbyUserDto);
     return this.lobbyUserRepository.save(updatedLobbyUser);
   }
 
   async remove(id: number) {
     try {
-      const lobbyUser = await this.lobbyUserRepository.find({ relations: ['user', 'lobby'], where: { id: id } });
+      const lobbyUser = await this.lobbyUserRepository.find({
+        relations: ['user', 'lobby'],
+        where: { id: id },
+      });
       return this.lobbyUserRepository.remove(lobbyUser);
-    }
-    catch (error) {
+    } catch (error) {
       return error;
     }
   }
 
   findAllByLobby(idLobby: number): PromiseLike<LobbyUser[]> {
-    return this.lobbyUserRepository.find({ 
-      relations: ['user', 'lobby'], 
-      where: { lobby: { id: idLobby } } });  
+    return this.lobbyUserRepository.find({
+      relations: ['user', 'lobby'],
+      where: { lobby: { id: idLobby } },
+    });
   }
 }

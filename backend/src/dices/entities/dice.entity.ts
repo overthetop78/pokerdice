@@ -1,19 +1,17 @@
-import { LobbyUser } from "src/lobby-user/entities/lobby-user.entity";
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
+import { LobbyUser } from '../../lobby-user/entities/lobby-user.entity';
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Dice {
+  @ManyToOne(() => LobbyUser, (lobbyUser) => lobbyUser.dices)
+  lobbyUser: LobbyUser;
 
-    @ManyToOne(() => LobbyUser , lobbyUser => lobbyUser.dices)
-    lobbyUser: LobbyUser;
+  @PrimaryColumn()
+  diceId: number;
 
-    @PrimaryColumn()
-    diceId: number;
+  @Column()
+  value: number;
 
-    @Column()
-    value: number;
-
-    @Column({ type: "boolean", default: false })
-    isLocked: boolean;
-
+  @Column({ type: 'boolean', default: false })
+  isLocked: boolean;
 }

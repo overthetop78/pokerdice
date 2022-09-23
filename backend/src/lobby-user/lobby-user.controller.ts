@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { LobbyUserService } from './lobby-user.service';
 import { CreateLobbyUserDto } from './dto/create-lobby-user.dto';
 import { UpdateLobbyUserDto } from './dto/update-lobby-user.dto';
@@ -25,7 +33,10 @@ export class LobbyUserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLobbyUserDto: UpdateLobbyUserDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateLobbyUserDto: UpdateLobbyUserDto,
+  ) {
     return this.lobbyUserService.update(+id, updateLobbyUserDto);
   }
 

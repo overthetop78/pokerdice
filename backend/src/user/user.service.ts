@@ -8,7 +8,6 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -46,7 +45,7 @@ export class UserService {
         id: id,
       },
     });
-    if(updateUserDto.password)  { 
+    if (updateUserDto.password) {
       updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 10);
     }
     const userMerged = Object.assign(await user, updateUserDto);

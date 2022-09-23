@@ -1,17 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { DicesService } from './dices.service';
 import { CreateDiceDto } from './dto/create-dice.dto';
+import { DiceDto } from './dto/dice.dto';
 import { UpdateDiceDto } from './dto/update-dice.dto';
 
 @Controller('dices')
 @ApiTags('Dices')
 export class DicesController {
-  constructor(private readonly dicesService: DicesService) {}
+  constructor(private readonly dicesService: DicesService) { }
 
   @Post()
   @ApiBody({ type: CreateDiceDto })
-  create(@Body() createDiceDto: CreateDiceDto) {
+  create(@Body() createDiceDto: DiceDto) {
     return this.dicesService.create(createDiceDto);
   }
 

@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LobbyUser } from 'src/lobby-user/entities/lobby-user.entity';
-import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateLobbyDto } from './dto/create-lobby.dto';
 import { UpdateLobbyDto } from './dto/update-lobby.dto';
@@ -9,7 +7,6 @@ import { Lobby } from './entities/lobby.entity';
 
 @Injectable()
 export class LobbyService {
-
   constructor(
     @InjectRepository(Lobby)
     private lobbyRepository: Repository<Lobby>,
@@ -27,7 +24,7 @@ export class LobbyService {
   async findAll() {
     try {
       const lobbies = await this.lobbyRepository.find({
-        relations: ['owner', 'users']
+        relations: ['owner', 'users'],
       });
       return lobbies;
     } catch (error) {
@@ -39,7 +36,7 @@ export class LobbyService {
     try {
       const lobby: Lobby[] = await this.lobbyRepository.find({
         relations: ['owner', 'users'],
-        where: { id: id }
+        where: { id: id },
       });
       return lobby;
     } catch (error) {
@@ -50,18 +47,18 @@ export class LobbyService {
   async update(id: number, updateLobbyDto: UpdateLobbyDto) {
     const lobby = this.lobbyRepository.find({
       relations: ['owner', 'users'],
-      where: { id: id }
+      where: { id: id },
     });
     const updatedLobby = Object.assign(await lobby, updateLobbyDto);
-    console.log("update : ",updatedLobby);
-    
+    console.log('update : ', updatedLobby);
+
     return this.lobbyRepository.save(updatedLobby);
   }
 
   async remove(id: number) {
     const lobby = this.lobbyRepository.find({
       relations: ['owner', 'users'],
-      where: { id: id }
+      where: { id: id },
     });
     return this.lobbyRepository.remove(await lobby);
   }

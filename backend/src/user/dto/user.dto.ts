@@ -1,7 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UserDto {
-    @ApiProperty({ example: '1', description: 'Unique identifier', required: true })
-    id: number;
-
+  @ApiProperty({
+    example: '1',
+    description: 'Unique identifier',
+    required: true,
+  })
+  id: number;
 }

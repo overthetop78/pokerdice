@@ -12,20 +12,27 @@ import { DicesModule } from './dices/dices.module';
 
 @Module({
   imports: [
-  ConfigModule.forRoot({
-    isGlobal: true,
-    envFilePath: '.env',
-  }),  
-  TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: process.env.MYSQL_HOST || 'locahost',
-    port:  parseInt(process.env.MYSQL_PORT_IN) || 3306,
-    username: process.env.MYSQL_USER || 'pokerdice',
-    password: process.env.MYSQL_PASSWORD || 'pokerdice',
-    database: process.env.MYSQL_DATABASE || 'pokerdice',
-    entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: true,
-  }), UserModule, AuthModule, LobbyModule, LobbyUserModule, CoreModule, DicesModule],
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.MYSQL_HOST || 'locahost',
+      port: parseInt(process.env.MYSQL_PORT_IN) || 3306,
+      username: process.env.MYSQL_USER || 'pokerdice',
+      password: process.env.MYSQL_PASSWORD || 'pokerdice',
+      database: process.env.MYSQL_DATABASE || 'pokerdice',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+    UserModule,
+    AuthModule,
+    LobbyModule,
+    LobbyUserModule,
+    CoreModule,
+    DicesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -8,7 +8,10 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 @Controller()
 @ApiTags('Auth')
 export class AppController {
-  constructor(private readonly appService: AppService, private authService: AuthService) {}
+  constructor(
+    private readonly appService: AppService,
+    private authService: AuthService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -16,7 +19,6 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  
   @ApiBody({ type: LoginDto })
   @Post('auth/login')
   async login(@Body() loginDto: LoginDto) {
@@ -26,7 +28,10 @@ export class AppController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   @Post('auth/checkPassword/')
-  async checkPassword(@Body() { password, oldPassword }: { password: string, oldPassword: string }) {
+  async checkPassword(
+    @Body()
+    { password, oldPassword }: { password: string; oldPassword: string },
+  ) {
     return this.authService.checkPassword(password, oldPassword);
   }
 }

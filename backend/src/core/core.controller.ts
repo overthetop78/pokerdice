@@ -1,13 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
-import { get } from 'http';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { DiceDto } from '../dices/dto/dice.dto';
 import { CoreService } from './core.service';
 import { CreateCoreDto } from './dto/create-core.dto';
 import { UpdateCoreDto } from './dto/update-core.dto';
 
 @Controller('core')
+@ApiTags('Core')
 export class CoreController {
-  constructor(private readonly coreService: CoreService) {}
+  constructor(private readonly coreService: CoreService) { }
 
   @Post()
   create(@Body() createCoreDto: CreateCoreDto) {
@@ -54,9 +55,23 @@ export class CoreController {
 
   @Patch('Game/UpdateDices/:lobbyUserId')
   @ApiParam({ name: 'lobbyUserId', type: Number })
-  @ApiBody({ type: [Number] })
-  UpdateDices(@Param('lobbyUserId') lobbyUserId: string, @Body() dices: number[]) {
-    return this.coreService.SecondLaunchDices(+lobbyUserId, dices);
+  UpdateDices(
+    @Param('lobbyUserId') lobbyUserId: string,
+  ) {
+    return this.coreService.SecondLaunchDices(+lobbyUserId);
   }
+
+  @Patch('Game/UpdateDices/:lobbyUserId/:diceId')
+  @ApiParam({ name: 'lobbyUserId', type: Number })
+  @ApiParam({ name: 'diceId', type: Number })
+  @ApiParam({ name: 'isLocked', type: Boolean })
+  UpdateDice(
+    @Param('lobbyUserId') lobbyUserId: string,
+    @Param('diceId') diceId: string,
+    @Param('isLocked') isLocked: boolean,
+  ) {
+    return this.coreService.updateDices(+lobbyUserId, +diceId, isLocked);
+  }
+
 
 }

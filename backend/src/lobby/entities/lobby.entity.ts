@@ -1,22 +1,33 @@
-import { LobbyUser } from "src/lobby-user/entities/lobby-user.entity";
-import { User } from "src/user/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { LobbyUser } from '../../lobby-user/entities/lobby-user.entity';
+import { User } from '../../user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Lobby {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ nullable: true })
-    name: string;
+  @Column({ nullable: true })
+  name: string;
 
-    @Column({ nullable: true })
-    password: string;
+  @Column({ nullable: true })
+  password: string;
 
-    @OneToOne(() => User, user => user.lobby, { cascade: true, eager: true })
-    @JoinColumn()
-    owner: User;
+  @OneToOne(() => User, (user) => user.lobby, { cascade: true, eager: true })
+  @JoinColumn()
+  owner: User;
 
-    @OneToMany(() => LobbyUser, lobbyUser => lobbyUser.lobby, { cascade: true, eager: true })
-    users: LobbyUser[];
+  @OneToMany(() => LobbyUser, (lobbyUser) => lobbyUser.lobby, {
+    cascade: true,
+    eager: true,
+  })
+  users: LobbyUser[];
 }

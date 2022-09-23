@@ -7,6 +7,7 @@ import { Dice } from './entities/dice.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Dice])],
   controllers: [DicesController],
-  providers: [DicesService]
+  providers: [DicesService],
+  exports: [DicesService],
 })
-export class DicesModule {}
+export class DicesModule { }

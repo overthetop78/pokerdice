@@ -16,22 +16,23 @@ async function bootstrap() {
     .setDescription('The Poker Dice API description')
     .setVersion('1.0')
     .addTag('poker-dice')
-    .addBearerAuth({
-      type: 'http',
-      scheme: 'bearer',
-      bearerFormat: 'JWT',
-      name: 'Authorization',
-      in: 'header',
-      description: 'JWT Authorization header using the Bearer scheme.',
-    },
-    'access-token')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+        description: 'JWT Authorization header using the Bearer scheme.',
+      },
+      'access-token',
+    )
     .addServer('http://localhost:3000')
     .addServer('http://192.168.0.3:3000')
     .build();
-    
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
 
   await app.listen(3000);
 }
