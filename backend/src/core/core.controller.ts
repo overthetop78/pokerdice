@@ -53,14 +53,6 @@ export class CoreController {
     return this.coreService.FirstLaunchDices(+lobbyUserId);
   }
 
-  @Patch('Game/UpdateDices/:lobbyUserId')
-  @ApiParam({ name: 'lobbyUserId', type: Number })
-  UpdateDices(
-    @Param('lobbyUserId') lobbyUserId: string,
-  ) {
-    return this.coreService.SecondLaunchDices(+lobbyUserId);
-  }
-
   @Patch('Game/UpdateDices/:lobbyUserId/:diceId')
   @ApiParam({ name: 'lobbyUserId', type: Number })
   @ApiParam({ name: 'diceId', type: Number })
@@ -73,5 +65,18 @@ export class CoreController {
     return this.coreService.updateDices(+lobbyUserId, +diceId, isLocked);
   }
 
+  @Patch('Game/UpdateDices/:lobbyUserId')
+  @ApiParam({ name: 'lobbyUserId', type: Number })
+  UpdateDices(
+    @Param('lobbyUserId') lobbyUserId: string,
+  ) {
+    return this.coreService.SecondLaunchDices(+lobbyUserId);
+  }
+
+  @Get('Game/CalculateScore/:lobbyId')
+  @ApiParam({ name: 'lobbyId', type: Number })
+  CalculateScore(@Param('lobbyId') lobbyId: number) {
+    return this.coreService.CalculateScore(lobbyId);
+  }
 
 }

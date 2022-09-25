@@ -10,6 +10,10 @@ export enum ValidPlay {
 }
 
 export class LobbyUserDto {
+
+  @ApiProperty({ example: 1, description: 'Position of the user in the lobby' })
+  position: number;
+
   @ApiProperty({ required: true, default: 0 })
   tour: number;
 

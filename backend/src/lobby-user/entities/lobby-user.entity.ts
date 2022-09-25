@@ -19,6 +19,9 @@ export class LobbyUser {
   id: number;
 
   @Column()
+  position: number;
+
+  @Column()
   tour: number;
 
   @Column()

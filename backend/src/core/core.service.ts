@@ -6,6 +6,7 @@ import { DiceDto } from '../dices/dto/dice.dto';
 import { ValidPlay } from '../lobby-user/dto/lobby-user.dto';
 import { LobbyUser } from '../lobby-user/entities/lobby-user.entity';
 import { LobbyUserService } from '../lobby-user/lobby-user.service';
+import { Core } from './core';
 import { CreateCoreDto } from './dto/create-core.dto';
 import { UpdateCoreDto } from './dto/update-core.dto';
 
@@ -15,7 +16,6 @@ export class MyDice {
   isLocked: boolean;
   lobbyUserId: number;
 }
-
 
 @Injectable()
 export class CoreService {
@@ -27,6 +27,7 @@ export class CoreService {
   constructor(
     private lobbyUserService: LobbyUserService,
     private dicesService: DicesService,
+    private core: Core,
   ) { }
 
   create(createCoreDto: CreateCoreDto) {
@@ -70,26 +71,33 @@ export class CoreService {
   }
 
   /**
-   *
+   * @description Liste la position des joueurs pour la partie
    * @param lobbyUsersId Identifiant des joueurs du lobby
    * @returns liste des identifiants des joueurs du lobby dans un ordre aléatoire
    */
   RandomListPlayer(lobbyUsersId: number[]): number[] {
     const result: number[] = [];
+    let i = 0;
     while (lobbyUsersId.length > 0) {
+      i++;
       const random = Math.floor(Math.random() * lobbyUsersId.length);
       result.push(lobbyUsersId[random]);
       if (result[0] === lobbyUsersId[random]) {
-        this.lobbyUserService.update(lobbyUsersId[random], { validPlay: ValidPlay.PLAYING });
+        this.lobbyUserService.update(lobbyUsersId[random], { position: i, validPlay: ValidPlay.PLAYING });
       }
       else {
-        this.lobbyUserService.update(lobbyUsersId[random], { validPlay: ValidPlay.WAITING_TOUR });
+        this.lobbyUserService.update(lobbyUsersId[random], { position: i, validPlay: ValidPlay.WAITING_TOUR });
       }
       lobbyUsersId.splice(random, 1);
     }
     return result;
   }
 
+  /**
+   * @description Lance les dés
+   * @param lobbyUserId Identifiant du joueur
+   * @returns liste des dés du joueur
+   */
   async FirstLaunchDices(lobbyUserId: number): Promise<MyDice[]> {
     this.dices = [];
     this.myDices = [];
@@ -101,6 +109,13 @@ export class CoreService {
     return this.myDices;
   }
 
+  /**
+   * @description Verrouille ou déverrouille un dé
+   * @param lobbyUserId Identifiant du joueur
+   * @param diceId Identifiant du dé
+   * @param isLocked Verrouillage du dé
+   * @returns liste des dés du joueur
+   */
   async updateDices(lobbyUserId: number, diceId: number, isLocked: boolean): Promise<MyDice[]> {
     const LobbyUser = await this.lobbyUserService.findOne(lobbyUserId);
     if (isLocked) {
@@ -113,7 +128,12 @@ export class CoreService {
     return this.myDices;
   }
 
-  async SecondLaunchDices(lobbyUserId: number): Promise<DiceDto[]> {
+  /**
+   * @description Lance les dés avec les valeurs précédentes si elles ne sont pas verrouillées
+   * @param lobbyUserId Identifiant du joueur
+   * @returns liste des dés du joueur
+   */
+  async SecondLaunchDices(lobbyUserId: number): Promise<LobbyUser> {
     const Dices = await this.dicesService.findOneByLobbyUserId(lobbyUserId);
     for (let i = 0; i < this.dices.length; i++) {
       if (!this.dices[i].isLocked) {
@@ -121,6 +141,19 @@ export class CoreService {
         this.dicesService.create(this.dices[i]);
       }
     }
-    return this.dices;
+    return await this.lobbyUserService.findOne(lobbyUserId);
+  }
+
+
+
+  async CalculateScore(lobbyId: number) {
+    if (lobbyId === 0) {
+      this.core.CalculateScore(null)
+    }
+    else {
+      const lobbyUsers: LobbyUser[] = await this.lobbyUserService.findAllByLobby(lobbyId);
+      this.core.CalculateScore(lobbyUsers);
+    }
+
   }
 }

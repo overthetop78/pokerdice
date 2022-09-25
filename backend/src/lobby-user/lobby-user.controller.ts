@@ -10,12 +10,13 @@ import {
 import { LobbyUserService } from './lobby-user.service';
 import { CreateLobbyUserDto } from './dto/create-lobby-user.dto';
 import { UpdateLobbyUserDto } from './dto/update-lobby-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ValidPlay } from './dto/lobby-user.dto';
 
 @Controller('lobby-user')
 @ApiTags('LobbyUser')
 export class LobbyUserController {
-  constructor(private readonly lobbyUserService: LobbyUserService) {}
+  constructor(private readonly lobbyUserService: LobbyUserService) { }
 
   @Post()
   create(@Body() createLobbyUserDto: CreateLobbyUserDto) {
@@ -43,5 +44,12 @@ export class LobbyUserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.lobbyUserService.remove(+id);
+  }
+
+  @Patch(':id/:validPlay')
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiParam({ name: 'validPlay', type: 'enum', enum: ValidPlay })
+  updateValidPlay(@Param('id') id: number, @Param('validPlay') validPlay: ValidPlay) {
+    return this.lobbyUserService.updateValidPlay(+id, validPlay);
   }
 }

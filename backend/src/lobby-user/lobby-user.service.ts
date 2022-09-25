@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLobbyUserDto } from './dto/create-lobby-user.dto';
+import { ValidPlay } from './dto/lobby-user.dto';
 import { UpdateLobbyUserDto } from './dto/update-lobby-user.dto';
 import { LobbyUser } from './entities/lobby-user.entity';
 
@@ -10,7 +11,7 @@ export class LobbyUserService {
   constructor(
     @InjectRepository(LobbyUser)
     private lobbyUserRepository: Repository<LobbyUser>,
-  ) {}
+  ) { }
 
   async create(createLobbyUserDto: CreateLobbyUserDto) {
     try {
@@ -35,7 +36,7 @@ export class LobbyUserService {
   async findOne(id: number): Promise<LobbyUser> {
     try {
       const lobbyUser = await this.lobbyUserRepository.findOne({
-        relations: ['user', 'lobby'],
+        relations: ['user'],
         where: { id: id },
       });
       return lobbyUser;
@@ -70,5 +71,15 @@ export class LobbyUserService {
       relations: ['user', 'lobby'],
       where: { lobby: { id: idLobby } },
     });
+  }
+
+  /**
+   * 
+   * @param idLobbyUser Identifiant du lobbyUser
+   * @param validPlay Enumérateur ValidPlay (ACCEPTED, WAITING_TOUR, WAITING_PLAYING, PLAYING, FINISHED)
+   * @returns lobbyUser mis à jour
+   */
+  async updateValidPlay(idLobbyUser: number, validPlay: ValidPlay) {
+    return await this.lobbyUserRepository.update(idLobbyUser, { validPlay: validPlay });
   }
 }
