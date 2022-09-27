@@ -1,5 +1,5 @@
-import { DicesService } from "src/dices/dices.service";
-import { LobbyUserService } from "src/lobby-user/lobby-user.service";
+import { DicesService } from "../dices/dices.service";
+import { LobbyUserService } from "../lobby-user/lobby-user.service";
 
 
 export enum ValueName {
@@ -49,6 +49,109 @@ export class Core {
         }
     }
 
+    lobbyTest2 = {
+        id: 0,
+        name: 'Lobby Test',
+        password: null,
+        owner: {
+            id: 1,
+            username: 'user1',
+            role: 'USER',
+        },
+        users: [
+            {
+                id: 1,
+                position: 1,
+                tour: 10,
+                points: 0,
+                win: 0,
+                lose: 0,
+                draw: 0,
+                validPlay: 'FINISHED',
+                user: {
+                    id: 1,
+                    username: 'user1',
+                    role: 'USER',
+                },
+                dices: [
+                    {
+                        diceId: 0,
+                        value: 4,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 1,
+                        value: 4,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 2,
+                        value: 5,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 3,
+                        value: 6,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 4,
+                        value: 2,
+                        isLocked: false
+                    }
+                ]
+            },
+            {
+                id: 2,
+                position: 2,
+                tour: 10,
+                points: 0,
+                win: 0,
+                lose: 0,
+                draw: 0,
+                validPlay: 'FINISHED',
+                user: {
+                    id: 2,
+                    username: 'user2',
+                    role: 'USER',
+                },
+                lobby: {
+                    id: 1,
+                    name: 'Lobby 1',
+                },
+                dices: [
+                    {
+                        diceId: 0,
+                        value: 4,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 1,
+                        value: 4,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 2,
+                        value: 1,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 3,
+                        value: 6,
+                        isLocked: false
+                    },
+                    {
+                        diceId: 4,
+                        value: 5,
+                        isLocked: false
+                    }
+                ]
+            }
+        ],
+        createdAt: '2021-05-01T00:00:00.000Z',
+        updatedAt: '2021-05-01T00:00:00.000Z',
+    };
+
     lobbyTest = {
         id: 0,
         name: 'Lobby Test',
@@ -96,7 +199,7 @@ export class Core {
                     },
                     {
                         diceId: 4,
-                        value: 3,
+                        value: 2,
                         isLocked: false
                     }
                 ]
@@ -132,7 +235,7 @@ export class Core {
                     },
                     {
                         diceId: 2,
-                        value: 6,
+                        value: 5,
                         isLocked: false
                     },
                     {
@@ -142,7 +245,7 @@ export class Core {
                     },
                     {
                         diceId: 4,
-                        value: 3,
+                        value: 6,
                         isLocked: false
                     }
                 ]
@@ -214,12 +317,12 @@ export class Core {
                 dices: [
                     {
                         diceId: 0,
-                        value: 6,
+                        value: 2,
                         isLocked: false
                     },
                     {
                         diceId: 1,
-                        value: 6,
+                        value: 2,
                         isLocked: false
                     },
                     {
@@ -234,7 +337,7 @@ export class Core {
                     },
                     {
                         diceId: 4,
-                        value: 3,
+                        value: 5,
                         isLocked: false
                     }
                 ]
@@ -316,7 +419,7 @@ export class Core {
                     },
                     {
                         diceId: 2,
-                        value: 1,
+                        value: 6,
                         isLocked: false
                     },
                     {
@@ -408,7 +511,7 @@ export class Core {
                     },
                     {
                         diceId: 2,
-                        value: 3,
+                        value: 2,
                         isLocked: false
                     },
                     {
@@ -418,7 +521,7 @@ export class Core {
                     },
                     {
                         diceId: 4,
-                        value: 6,
+                        value: 5,
                         isLocked: false
                     }
                 ]
@@ -676,39 +779,36 @@ export class Core {
 
         // recherche du gagnant (boucle sur les joueurs)
         usersResult.forEach((userResult: UserResult) => {
-            // si le joueur a une quinte et que le gagnant n'en a pas
-            if (userResult.quinte !== 0 && winner.quinte === 0) {
-                // le joueur devient le gagnant
-                winner = userResult;
-            }
-            // si le joueur a une quinte et que le gagnant en a une
-            else if (userResult.quinte !== 0 && winner.quinte !== 0) {
-                // si la quinte du joueur est plus grande que celle du gagnant
-                if (userResult.quinte > winner.quinte) {
-                    winner = userResult;
-                }
-                // si la quinte du joueur est égale à celle du gagnant
-                else if (userResult.quinte === winner.quinte) {
-                    if (draw.length === 0) {
-                        draw.push(winner);
+            // Si joueur a une Quinte 
+            if (userResult.result === ValueName.QUINTE) {
+                // Si le gagnant a une quinte
+                if (winner.result === ValueName.QUINTE) {
+                    if (userResult.quinte > winner.quinte) {
+                        winner = userResult;
                     }
-                    draw.push(userResult);
+                    else if (userResult.quinte === winner.quinte) {
+                        if (draw.length === 0) {
+                            draw.push(winner);
+                        }
+                        draw.push(userResult);
+                    }
                 }
-            }
-            // si le joueur et le gagnant n'ont pas de quinte
-            else if (userResult.quinte === 0 && winner.quinte === 0) {
-                // si le joueur a une grande suite et que le gagnant n'en a pas
-                if (userResult.grandeSuite !== 0 && winner.grandeSuite === 0) {
-                    // le joueur devient le gagnant
+                // sinon le joueur est le gagnant
+                else {
                     winner = userResult;
                 }
-                // si le joueur a une grande suite et que le gagnant en a une
-                else if (userResult.grandeSuite !== 0 && winner.grandeSuite !== 0) {
-                    // si la grande suite du joueur est plus grande que celle du gagnant
+            }
+            // Si joueur a une Grande Suite
+            else if (userResult.result === ValueName.GRANDE_SUITE) {
+                // Si le gagnant a une Quinte
+                if (winner.result === ValueName.QUINTE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Grande Suite
+                else if (winner.result === ValueName.GRANDE_SUITE) {
                     if (userResult.grandeSuite > winner.grandeSuite) {
                         winner = userResult;
                     }
-                    // si la grande suite du joueur est égale à celle du gagnant
                     else if (userResult.grandeSuite === winner.grandeSuite) {
                         if (draw.length === 0) {
                             draw.push(winner);
@@ -716,184 +816,270 @@ export class Core {
                         draw.push(userResult);
                     }
                 }
-                // si le joueur et le gagnant n'ont pas de grande suite
-                else if (userResult.grandeSuite === 0 && winner.grandeSuite === 0) {
-                    // si le joueur a une petite suite et que le gagnant n'en a pas
-                    if (userResult.petiteSuite !== 0 && winner.petiteSuite === 0) {
-                        // le joueur devient le gagnant
+                // sinon le joueur est le gagnant
+                else {
+                    winner = userResult;
+                }
+            }
+            // Si joueur a une Petite Suite
+            else if (userResult.result === ValueName.PETITE_SUITE) {
+                // Si le gagnant a une Quinte
+                if (winner.result === ValueName.QUINTE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Grande Suite
+                else if (winner.result === ValueName.GRANDE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Petite Suite
+                else if (winner.result === ValueName.PETITE_SUITE) {
+                    if (userResult.petiteSuite > winner.petiteSuite) {
                         winner = userResult;
                     }
-                    // si le joueur a une petite suite et que le gagnant en a une
-                    else if (userResult.petiteSuite !== 0 && winner.petiteSuite !== 0) {
-                        // si la petite suite du joueur est plus grande que celle du gagnant
-                        if (userResult.petiteSuite > winner.petiteSuite) {
+                    else if (userResult.petiteSuite === winner.petiteSuite) {
+                        if (this.SearchHighestDice(userResult, winner, []) === null) {
+                            if (draw.length === 0) {
+                                draw.push(winner);
+                            }
+                            draw.push(userResult);
+                        }
+                        else {
+                            winner = this.SearchHighestDice(userResult, winner, []);
+                        }
+                    }
+                    // sinon le joueur est le gagnant
+                    else {
+                        winner = userResult;
+                    }
+                }
+                // sinon le joueur est le gagnant
+                else {
+                    winner = userResult;
+                }
+            }
+            // Si joueur a un Full
+            else if (userResult.result === ValueName.FULL) {
+                // Si le gagnant a une Quinte
+                if (winner.result === ValueName.QUINTE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Grande Suite
+                else if (winner.result === ValueName.GRANDE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Petite Suite
+                else if (winner.result === ValueName.PETITE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Full
+                else if (winner.result === ValueName.FULL) {
+                    if (userResult.brelan > winner.brelan) {
+                        winner = userResult;
+                    }
+                    else if (userResult.brelan === winner.brelan) {
+                        if (userResult.paire1 > winner.paire1) {
                             winner = userResult;
                         }
-                        else if (userResult.petiteSuite === winner.petiteSuite) {
-                            // si le joueur et le gagnant ont le même dé
+                        else if (userResult.paire1 === winner.paire1) {
+                            if (draw.length === 0) {
+                                draw.push(winner);
+                            }
+                            draw.push(userResult);
+                        }
+                    }
+                }
+                // sinon le joueur est le gagnant
+                else {
+                    winner = userResult;
+                }
+            }
+            // Si joueur a un Carré
+            else if (userResult.result === ValueName.CARRE) {
+                // Si le gagnant a une Quinte
+                if (winner.result === ValueName.QUINTE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Grande Suite
+                else if (winner.result === ValueName.GRANDE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Petite Suite
+                else if (winner.result === ValueName.PETITE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Full
+                else if (winner.result === ValueName.FULL) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Carré
+                else if (winner.result === ValueName.CARRE) {
+                    if (userResult.carre > winner.carre) {
+                        winner = userResult;
+                    }
+                    else if (userResult.carre === winner.carre) {
+                        if (this.SearchHighestDice(userResult, winner, []) === null) {
+                            if (draw.length === 0) {
+                                draw.push(winner);
+                            }
+                            draw.push(userResult);
+                        }
+                        else {
+                            winner = this.SearchHighestDice(userResult, winner, []);
+                        }
+                    }
+                }
+                // sinon le joueur est le gagnant
+                else {
+                    winner = userResult;
+                }
+            }
+            // Si joueur a un Brelan
+            else if (userResult.result === ValueName.BRELAN) {
+                // Si le gagnant a une Quinte
+                if (winner.result === ValueName.QUINTE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Grande Suite
+                else if (winner.result === ValueName.GRANDE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Petite Suite
+                else if (winner.result === ValueName.PETITE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Full
+                else if (winner.result === ValueName.FULL) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Carré
+                else if (winner.result === ValueName.CARRE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Brelan
+                else if (winner.result === ValueName.BRELAN) {
+                    if (userResult.brelan > winner.brelan) {
+                        winner = userResult;
+                    }
+                    else if (userResult.brelan === winner.brelan) {
+                        if (this.SearchHighestDice(userResult, winner, []) === null) {
+                            if (draw.length === 0) {
+                                draw.push(winner);
+                            }
+                            draw.push(userResult);
+                        }
+                        else {
+                            winner = this.SearchHighestDice(userResult, winner, []);
+                        }
+                    }
+                }
+                // sinon le joueur est le gagnant
+                else {
+                    winner = userResult;
+                }
+            }
+            // Si joueur a une Double Paire
+            else if (userResult.result === ValueName.DOUBLE_PAIRE) {
+                // Si le gagnant a une Quinte
+                if (winner.result === ValueName.QUINTE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Grande Suite
+                else if (winner.result === ValueName.GRANDE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Petite Suite
+                else if (winner.result === ValueName.PETITE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Full
+                else if (winner.result === ValueName.FULL) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Carré
+                else if (winner.result === ValueName.CARRE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Brelan
+                else if (winner.result === ValueName.BRELAN) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Double Paire
+                else if (winner.result === ValueName.DOUBLE_PAIRE) {
+                    if (userResult.paire1 > winner.paire1) {
+                        winner = userResult;
+                    }
+                    else if (userResult.paire1 === winner.paire1) {
+                        if (userResult.paire2 > winner.paire2) {
+                            winner = userResult;
+                        }
+                        else if (userResult.paire2 === winner.paire2) {
                             if (this.SearchHighestDice(userResult, winner, []) === null) {
                                 if (draw.length === 0) {
                                     draw.push(winner);
                                 }
                                 draw.push(userResult);
-                                winner = userResult;
                             }
                             else {
                                 winner = this.SearchHighestDice(userResult, winner, []);
                             }
                         }
                     }
-                    // si le joueur et le gagnant n'ont pas de petite suite
-                    else if (userResult.petiteSuite === 0 && winner.petiteSuite === 0) {
-                        // si le joueur a un carre et que le gagnant n'en a pas
-                        if (userResult.carre !== 0 && winner.carre === 0) {
-                            winner = userResult;
+                }
+                // sinon le joueur est le gagnant
+                else {
+                    winner = userResult;
+                }
+            }
+            // Si joueur a une Paire
+            else if (userResult.result === ValueName.PAIRE) {
+                // Si le gagnant a une Quinte
+                if (winner.result === ValueName.QUINTE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Grande Suite
+                else if (winner.result === ValueName.GRANDE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Petite Suite
+                else if (winner.result === ValueName.PETITE_SUITE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Full
+                else if (winner.result === ValueName.FULL) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Carré
+                else if (winner.result === ValueName.CARRE) {
+                    winner = winner;
+                }
+                // Si le gagnant a un Brelan
+                else if (winner.result === ValueName.BRELAN) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Double Paire
+                else if (winner.result === ValueName.DOUBLE_PAIRE) {
+                    winner = winner;
+                }
+                // Si le gagnant a une Paire
+                else if (winner.result === ValueName.PAIRE) {
+                    if (userResult.paire1 > winner.paire1) {
+                        winner = userResult;
+                    }
+                    else if (userResult.paire1 === winner.paire1) {
+                        if (this.SearchHighestDice(userResult, winner, []) === null) {
+                            if (draw.length === 0) {
+                                draw.push(winner);
+                            }
+                            draw.push(userResult);
                         }
-                        // si le joueur a un carre et que le gagnant en a un
-                        else if (userResult.carre !== 0 && winner.carre !== 0) {
-                            // si le carre du joueur est plus grand que celui du gagnant
-                            if (userResult.carre > winner.carre) {
-                                // le joueur devient le gagnant
-                                winner = userResult;
-                            }
-                            // si le carre du joueur est égal à celui du gagnant
-                            else if (userResult.carre === winner.carre) {
-                                // si le joueur et le gagnant ont le même dé
-                                if (this.SearchHighestDice(userResult, winner, []) === null) {
-                                    if (draw.length === 0) {
-                                        draw.push(winner);
-                                    }
-                                    draw.push(userResult);
-                                    winner = userResult;
-                                }
-                                else {
-                                    winner = this.SearchHighestDice(userResult, winner, []);
-                                }
-                            }
-                        }
-                        // si le joueur et le gagnant n'ont pas de carre
-                        else if (userResult.carre === 0 && winner.carre === 0) {
-                            // si le joueur a un full et que le gagnant n'en a pas
-                            if (userResult.brelan !== 0 && userResult.paire1 !== 0 && winner.brelan === 0) {
-                                winner = userResult;
-                            }
-                            // si le joueur a un full et que le gagnant a un brelan
-                            else if (userResult.brelan !== 0 && userResult.paire1 !== 0 && winner.brelan !== 0 && winner.paire1 === 0) {
-                                winner = userResult;
-                            }
-                            // si le joueur a un full et que le gagnant a un full
-                            else if (userResult.brelan !== 0 && userResult.paire1 !== 0 && winner.brelan !== 0 && winner.paire1 !== 0) {
-                                // si le brelan du joueur est plus grand que celui du gagnant
-                                if (userResult.brelan > winner.brelan) {
-                                    winner = userResult;
-                                }
-                                // si le brelan du joueur est égal à celui du gagnant
-                                else if (userResult.brelan === winner.brelan) {
-                                    // si la paire du joueur est plus grande que celle du gagnant
-                                    if (userResult.paire1 > winner.paire1) {
-                                        winner = userResult;
-                                    }
-                                    // si la paire du joueur est égale à celle du gagnant
-                                    else if (userResult.paire1 === winner.paire1) {
-                                        if (draw.length === 0) {
-                                            draw.push(winner);
-                                        }
-                                        draw.push(userResult);
-                                    }
-                                }
-                            }
-                            else if (userResult.brelan !== 0 && userResult.paire1 === 0 && winner.brelan === 0 && winner.paire1 === 0) {
-                                console.log("brelan");
-
-                                // si le joueur a un brelan et que le gagnant n'en a pas
-                                if (userResult.brelan !== 0 && winner.brelan === 0) {
-                                    winner = userResult;
-                                }
-                                // si le joueur a un brelan et que le gagnant en a un
-                                else if (userResult.brelan !== 0 && winner.brelan !== 0) {
-                                    // si le brelan du joueur est plus grand que celui du gagnant
-                                    if (userResult.brelan > winner.brelan) {
-                                        winner = userResult;
-                                    }
-                                    // si le brelan du joueur est égal à celui du gagnant
-                                    else if (userResult.brelan === winner.brelan) {
-                                        // si le joueur et le gagnant ont le même dé
-                                        if (this.SearchHighestDice(userResult, winner, []) === null) {
-                                            if (draw.length === 0) {
-                                                draw.push(winner);
-                                            }
-                                            draw.push(userResult);
-                                        }
-                                        else {
-                                            winner = this.SearchHighestDice(userResult, winner, []);
-                                        }
-                                    }
-                                }
-                            }
-                            // si le joueur et le gagnant n'ont pas de brelan
-                            else if (userResult.brelan === 0 && winner.brelan === 0) {
-                                // si le joueur a une double paire et que le gagnant n'en a pas
-                                if (userResult.paire1 !== 0 && userResult.paire2 !== 0 && winner.paire1 === 0 && winner.paire2 === 0) {
-                                    winner = userResult;
-                                }
-                                // si le joueur a une double paire et que le gagnant une paire
-                                else if (userResult.paire1 !== 0 && userResult.paire2 !== 0 && winner.paire1 === 0 && winner.paire2 !== 0) {
-                                    winner = userResult;
-                                }
-                                // si le joueur a une double paire et que le gagnant a une double paire
-                                else if (userResult.paire1 !== 0 && userResult.paire2 !== 0 && winner.paire1 !== 0 && winner.paire2 !== 0) {
-                                    // si la paire 1 du joueur est plus grande que celle du gagnant
-                                    if (userResult.paire1 > winner.paire1) {
-                                        winner = userResult;
-                                    }
-                                    // si la paire 1 du joueur est égale à celle du gagnant
-                                    else if (userResult.paire1 === winner.paire1) {
-                                        // si la paire 2 du joueur est plus grande que celle du gagnant 
-                                        if (userResult.paire2 > winner.paire2) {
-                                            winner = userResult;
-                                        }
-                                        // si la paire 2 du joueur est égale à celle du gagnant
-                                        else if (userResult.paire2 === winner.paire2) {
-                                            // si le joueur et le gagnant ont le même dé
-                                            if (this.SearchHighestDice(userResult, winner, []) === null) {
-                                                if (draw.length === 0) {
-                                                    draw.push(winner);
-                                                }
-                                                draw.push(userResult);
-                                            }
-                                            else {
-                                                winner = this.SearchHighestDice(userResult, winner, []);
-                                            }
-                                        }
-                                    }
-                                }
-                                // si le joueur a une pairer et que le gagnant n'en a pas
-                                else if (userResult.paire1 !== 0 && userResult.paire2 === 0 && winner.paire1 === 0 && winner.paire2 === 0) {
-                                    winner = userResult;
-                                }
-                                // si le joueur a une paire et que le gagnant a une paire
-                                else if (userResult.paire1 !== 0 && userResult.paire2 === 0 && winner.paire1 !== 0 && winner.paire2 === 0) {
-                                    // si la paire du joueur est plus grande que celle du gagnant
-                                    if (userResult.paire1 > winner.paire1) {
-                                        winner = userResult;
-                                    }
-                                    // si la paire du joueur est égale à celle du gagnant
-                                    else if (userResult.paire1 === winner.paire1) {
-                                        // si le joueur et le gagnant ont le même dé
-                                        if (this.SearchHighestDice(userResult, winner, []) === null) {
-                                            if (draw.length === 0) {
-                                                draw.push(winner);
-                                            }
-                                            draw.push(userResult);
-                                        }
-                                        else {
-                                            winner = this.SearchHighestDice(userResult, winner, []);
-                                        }
-                                    }
-                                }
-                            }
+                        else {
+                            winner = this.SearchHighestDice(userResult, winner, []);
                         }
                     }
+                }
+                // sinon le joueur est le gagnant
+                else {
+                    winner = userResult;
                 }
             }
         });

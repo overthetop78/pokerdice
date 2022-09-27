@@ -4,11 +4,13 @@ import { AppService } from './app.service';
 
 describe('AppController', () => {
   let appController: AppController;
+  let service: AppService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [],
       controllers: [AppController],
-      providers: [AppService],
+      providers: [AppService, { provide: 'AppRepository', useValue: {} }],
     }).compile();
 
     appController = app.get<AppController>(AppController);

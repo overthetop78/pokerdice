@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { LobbyUserDto } from "src/lobby-user/dto/lobby-user.dto";
-import { LobbyUserIdDto } from "../../lobby-user/dto/lobby-user-id.dto";
+import { LobbyUserDto } from "../../lobby-user/dto/lobby-user.dto";
 
 export class DiceDto {
     @ApiProperty({ required: true, default: 0 })

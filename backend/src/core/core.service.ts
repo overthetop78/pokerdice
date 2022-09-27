@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDiceDto } from 'src/dices/dto/create-dice.dto';
-import { Dice } from 'src/dices/entities/dice.entity';
+import { CreateDiceDto } from '../dices/dto/create-dice.dto';
+import { Dice } from '../dices/entities/dice.entity';
 import { DicesService } from '../dices/dices.service';
 import { DiceDto } from '../dices/dto/dice.dto';
 import { ValidPlay } from '../lobby-user/dto/lobby-user.dto';
