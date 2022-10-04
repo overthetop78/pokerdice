@@ -1,6 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
+import { Auth } from './auth/entities/auth.entity';
+import { UserService } from './user/user.service';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -8,12 +12,18 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [],
+      imports: [Auth],
       controllers: [AppController],
-      providers: [AppService, { provide: 'AppRepository', useValue: {} }],
+      providers: [AppService, AuthService, UserService,
+        { provide: 'AppRepository', useValue: {} },
+        {
+          provide: getRepositoryToken(Auth),
+          useValue: {},
+        }],
     }).compile();
 
     appController = app.get<AppController>(AppController);
+    service = app.get<AppService>(AppService);
   });
 
   describe('root', () => {

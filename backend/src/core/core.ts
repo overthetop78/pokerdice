@@ -1,5 +1,7 @@
+import { ValidPlay } from "../lobby-user/dto/lobby-user.dto";
 import { DicesService } from "../dices/dices.service";
 import { LobbyUserService } from "../lobby-user/lobby-user.service";
+import { CoreResultDto } from "./dto/core-result.dto";
 
 
 export enum ValueName {
@@ -49,494 +51,17 @@ export class Core {
         }
     }
 
-    lobbyTest2 = {
-        id: 0,
-        name: 'Lobby Test',
-        password: null,
-        owner: {
-            id: 1,
-            username: 'user1',
-            role: 'USER',
-        },
-        users: [
-            {
-                id: 1,
-                position: 1,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 1,
-                    username: 'user1',
-                    role: 'USER',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 2,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 2,
-                position: 2,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 2,
-                    username: 'user2',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 1,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 5,
-                        isLocked: false
-                    }
-                ]
+    async FinishGame(lobbyId: number): Promise<Boolean> {
+        const lobbyUsers = await this.lobbyUserService.findAllByLobby(lobbyId);
+        lobbyUsers.forEach((lobbyUser) => {
+            if (lobbyUser.validPlay !== ValidPlay.FINISHED) {
+                return false;
             }
-        ],
-        createdAt: '2021-05-01T00:00:00.000Z',
-        updatedAt: '2021-05-01T00:00:00.000Z',
-    };
+        });
+        return true;
+    }
 
-    lobbyTest = {
-        id: 0,
-        name: 'Lobby Test',
-        password: null,
-        owner: {
-            id: 1,
-            username: 'user1',
-            role: 'USER',
-        },
-        users: [
-            {
-                id: 1,
-                position: 1,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 1,
-                    username: 'user1',
-                    role: 'USER',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 2,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 2,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 2,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 2,
-                position: 2,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 2,
-                    username: 'user2',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 6,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 3,
-                position: 3,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 3,
-                    username: 'user3',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 6,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 4,
-                position: 4,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 4,
-                    username: 'user4',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 2,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 2,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 5,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 5,
-                position: 5,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 5,
-                    username: 'user5',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 1,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 1,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 1,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 3,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 6,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 6,
-                position: 6,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 6,
-                    username: 'user6',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 3,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 5,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 7,
-                position: 7,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 7,
-                    username: 'user7',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 4,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 6,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 2,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 4,
-                        isLocked: false
-                    }
-                ]
-            },
-            {
-                id: 8,
-                position: 8,
-                tour: 10,
-                points: 0,
-                win: 0,
-                lose: 0,
-                draw: 0,
-                validPlay: 'FINISHED',
-                user: {
-                    id: 8,
-                    username: 'user8',
-                    role: 'USER',
-                },
-                lobby: {
-                    id: 1,
-                    name: 'Lobby 1',
-                },
-                dices: [
-                    {
-                        diceId: 0,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 1,
-                        value: 5,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 2,
-                        value: 2,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 3,
-                        value: 3,
-                        isLocked: false
-                    },
-                    {
-                        diceId: 4,
-                        value: 5,
-                        isLocked: false
-                    }
-                ]
-            }
-        ],
-        createdAt: '2021-05-01T00:00:00.000Z',
-        updatedAt: '2021-05-01T00:00:00.000Z',
-    };
-
-
-
-    CalculateScore(lobby: any) {
-        if (lobby.length === 0) {
-            lobby = this.lobbyTest; // utilisation de lobbyTest pour les tests
-        }
+    CalculateScore(lobby: CoreResultDto): UserResult | UserResult[] {
 
         let usersResult: UserResult[] = [{
             idLobbyUser: 0,
@@ -606,174 +131,30 @@ export class Core {
                 quinte: 0
             });
 
-            // recherche des quintes
-            if (dice1Count === 5) {
-                usersResult[userLobbyId].quinte = 1;
-                usersResult[userLobbyId].result = ValueName.QUINTE;
-            } else if (dice2Count === 5) {
-                usersResult[userLobbyId].quinte = 2;
-                usersResult[userLobbyId].result = ValueName.QUINTE;
-            } else if (dice3Count === 5) {
-                usersResult[userLobbyId].quinte = 3;
-                usersResult[userLobbyId].result = ValueName.QUINTE;
-            } else if (dice4Count === 5) {
-                usersResult[userLobbyId].quinte = 4;
-                usersResult[userLobbyId].result = ValueName.QUINTE;
-            } else if (dice5Count === 5) {
-                usersResult[userLobbyId].quinte = 5;
-                usersResult[userLobbyId].result = ValueName.QUINTE;
-            } else if (dice6Count === 5) {
-                usersResult[userLobbyId].quinte = 6;
-                usersResult[userLobbyId].result = ValueName.QUINTE;
-            }
+            usersResult[userLobbyId] = SearchQuinte(usersResult[userLobbyId],
+                dice1Count, dice2Count, dice3Count,
+                dice4Count, dice5Count, dice6Count);
 
-            // recherche des carrés
-            if (dice1Count === 4) {
-                usersResult[userLobbyId].carre = 1;
-                usersResult[userLobbyId].result = ValueName.CARRE;
-            }
-            if (dice2Count === 4) {
-                usersResult[userLobbyId].carre = 2;
-                usersResult[userLobbyId].result = ValueName.CARRE;
-            }
-            if (dice3Count === 4) {
-                usersResult[userLobbyId].carre = 3;
-                usersResult[userLobbyId].result = ValueName.CARRE;
-            }
-            if (dice4Count === 4) {
-                usersResult[userLobbyId].carre = 4;
-                usersResult[userLobbyId].result = ValueName.CARRE;
-            }
-            if (dice5Count === 4) {
-                usersResult[userLobbyId].carre = 5;
-                usersResult[userLobbyId].result = ValueName.CARRE;
-            }
-            if (dice6Count === 4) {
-                usersResult[userLobbyId].carre = 6;
-                usersResult[userLobbyId].result = ValueName.CARRE;
-            }
+            usersResult[userLobbyId] = SearchCarre(usersResult[userLobbyId],
+                dice1Count, dice2Count, dice3Count,
+                dice4Count, dice5Count, dice6Count);
 
-            // recherche des suites
-            if (dice1Count === 1 && dice2Count === 1 && dice3Count === 1 && dice4Count === 1 && dice5Count === 1) {
-                usersResult[userLobbyId].grandeSuite = 5;
-                usersResult[userLobbyId].result = ValueName.GRANDE_SUITE;
-            }
-            else if (dice2Count === 1 && dice3Count === 1 && dice4Count === 1 && dice5Count === 1 && dice6Count === 1) {
-                usersResult[userLobbyId].grandeSuite = 6;
-                usersResult[userLobbyId].result = ValueName.GRANDE_SUITE;
-            }
-            else if (dice1Count > 0 && dice2Count > 0 && dice3Count > 0 && dice4Count > 0) {
-                usersResult[userLobbyId].petiteSuite = 4;
-                usersResult[userLobbyId].result = ValueName.PETITE_SUITE;
-            }
-            else if (dice2Count > 0 && dice3Count > 0 && dice4Count > 0 && dice5Count > 0) {
-                usersResult[userLobbyId].petiteSuite = 5;
-                usersResult[userLobbyId].result = ValueName.PETITE_SUITE;
-            }
-            else if (dice3Count > 0 && dice4Count > 0 && dice5Count > 0 && dice6Count > 0) {
-                usersResult[userLobbyId].petiteSuite = 6;
-                usersResult[userLobbyId].result = ValueName.PETITE_SUITE;
-            }
+            usersResult[userLobbyId] = SearchSuite(usersResult[userLobbyId],
+                dice1Count, dice2Count, dice3Count,
+                dice4Count, dice5Count, dice6Count);
 
-            // recherche des brelans
-            if (dice1Count === 3) {
-                usersResult[userLobbyId].brelan = 1;
-            }
-            if (dice2Count === 3) {
-                usersResult[userLobbyId].brelan = 2;
-            }
-            if (dice3Count === 3) {
-                usersResult[userLobbyId].brelan = 3;
-            }
-            if (dice4Count === 3) {
-                usersResult[userLobbyId].brelan = 4;
-            }
-            if (dice5Count === 3) {
-                usersResult[userLobbyId].brelan = 5;
-            }
-            if (dice6Count === 3) {
-                usersResult[userLobbyId].brelan = 6;
-            }
+            usersResult[userLobbyId] = SearchBrelan(usersResult[userLobbyId],
+                dice1Count, dice2Count, dice3Count,
+                dice4Count, dice5Count, dice6Count);
 
-            let paire1: number = 0;
-            let paire2: number = 0;
-
-            if (usersResult[userLobbyId].petiteSuite === 0) {
-                // recherche des doubles
-                if (dice1Count === 2) {
-                    if (paire1 === 0) {
-                        paire1 = 1;
-                    } else {
-                        paire2 = 1;
-                    }
-                }
-                if (dice2Count === 2) {
-                    if (paire1 === 0) {
-                        paire1 = 2;
-                    } else {
-                        paire2 = 2;
-                    }
-                }
-                if (dice3Count === 2) {
-                    if (paire1 === 0) {
-                        paire1 = 3;
-                    } else {
-                        paire2 = 3;
-                    }
-                }
-                if (dice4Count === 2) {
-                    if (paire1 === 0) {
-                        paire1 = 4;
-                    } else {
-                        paire2 = 4;
-                    }
-                }
-                if (dice5Count === 2) {
-                    if (paire1 === 0) {
-                        paire1 = 5;
-                    } else {
-                        paire2 = 5;
-                    }
-                }
-                if (dice6Count === 2) {
-                    if (paire1 === 0) {
-                        paire1 = 6;
-                    } else {
-                        paire2 = 6;
-                    }
-                }
-                if (paire1 !== 0 && paire2 !== 0) {
-                    if (paire1 > paire2) {
-                        usersResult[userLobbyId].paire1 = paire1;
-                        usersResult[userLobbyId].paire2 = paire2;
-                        usersResult[userLobbyId].result = ValueName.DOUBLE_PAIRE;
-                    }
-                    if (paire2 > paire1) {
-                        usersResult[userLobbyId].paire1 = paire2;
-                        usersResult[userLobbyId].paire2 = paire1;
-                        usersResult[userLobbyId].result = ValueName.DOUBLE_PAIRE;
-                    }
-                }
-                else if (paire1 !== 0 && paire2 === 0) {
-                    usersResult[userLobbyId].paire1 = paire1;
-                    if (usersResult[userLobbyId].brelan !== 0) {
-                        usersResult[userLobbyId].result = ValueName.FULL;
-                    }
-                    else {
-                        usersResult[userLobbyId].result = ValueName.PAIRE;
-                    }
-                }
-                else if (paire1 === 0 && usersResult[userLobbyId].brelan !== 0) {
-                    usersResult[userLobbyId].result = ValueName.BRELAN;
-                }
-            }
+            usersResult[userLobbyId] = SearchPaire(usersResult[userLobbyId],
+                dice1Count, dice2Count, dice3Count,
+                dice4Count, dice5Count, dice6Count);
         });
-        console.log(usersResult);
-
-        this.SearchWinner(usersResult);
+        return this.SearchWinner(usersResult);
     }
 
-    SearchWinner(usersResult: UserResult[]) {
+    SearchWinner(usersResult: UserResult[]): UserResult | UserResult[] {
         let winner: UserResult = usersResult[0];
         let draw: UserResult[] = [];
 
@@ -1084,10 +465,10 @@ export class Core {
             }
         });
         if (draw.length > 0) {
-            console.log("draw", draw);
+            return draw;
         }
         else {
-            console.log("Winner => ", winner);
+            return winner;
         }
     }
 
@@ -1096,8 +477,6 @@ export class Core {
         let winnerDice = winner.dices;
         let userResultHighestDice = 0;
         let winnerHighestDice = 0;
-        console.log("userResultDice", userResultDice);
-        console.log("winnerDice", winnerDice);
 
         userResultDice.forEach((dice: number) => {
             if (dice !== userResult.carre && dice !== userResult.brelan && dice !== userResult.paire1 && dice !== userResult.paire2) {
@@ -1158,4 +537,192 @@ export class Core {
         }
     }
 
+}
+
+export function SearchQuinte(userResult: UserResult,
+    dice1Count: number, dice2Count: number, dice3Count: number,
+    dice4Count: number, dice5Count: number, dice6Count: number): UserResult {
+    // recherche des quintes
+    if (dice1Count === 5) {
+        userResult.quinte = 1;
+        userResult.result = ValueName.QUINTE;
+    } else if (dice2Count === 5) {
+        userResult.quinte = 2;
+        userResult.result = ValueName.QUINTE;
+    } else if (dice3Count === 5) {
+        userResult.quinte = 3;
+        userResult.result = ValueName.QUINTE;
+    } else if (dice4Count === 5) {
+        userResult.quinte = 4;
+        userResult.result = ValueName.QUINTE;
+    } else if (dice5Count === 5) {
+        userResult.quinte = 5;
+        userResult.result = ValueName.QUINTE;
+    } else if (dice6Count === 5) {
+        userResult.quinte = 6;
+        userResult.result = ValueName.QUINTE;
+    }
+    return userResult;
+}
+
+export function SearchCarre(userResult: UserResult,
+    dice1Count: number, dice2Count: number, dice3Count: number,
+    dice4Count: number, dice5Count: number, dice6Count: number): UserResult {
+    // recherche des carrés
+    if (dice1Count === 4) {
+        userResult.carre = 1;
+        userResult.result = ValueName.CARRE;
+    }
+    if (dice2Count === 4) {
+        userResult.carre = 2;
+        userResult.result = ValueName.CARRE;
+    }
+    if (dice3Count === 4) {
+        userResult.carre = 3;
+        userResult.result = ValueName.CARRE;
+    }
+    if (dice4Count === 4) {
+        userResult.carre = 4;
+        userResult.result = ValueName.CARRE;
+    }
+    if (dice5Count === 4) {
+        userResult.carre = 5;
+        userResult.result = ValueName.CARRE;
+    }
+    if (dice6Count === 4) {
+        userResult.carre = 6;
+        userResult.result = ValueName.CARRE;
+    }
+    return userResult;
+}
+
+export function SearchSuite(userResult: UserResult,
+    dice1Count: number, dice2Count: number, dice3Count: number,
+    dice4Count: number, dice5Count: number, dice6Count: number): UserResult {
+    // recherche des suites
+    if (dice1Count === 1 && dice2Count === 1 && dice3Count === 1 && dice4Count === 1 && dice5Count === 1) {
+        userResult.grandeSuite = 5;
+        userResult.result = ValueName.GRANDE_SUITE;
+    }
+    else if (dice2Count === 1 && dice3Count === 1 && dice4Count === 1 && dice5Count === 1 && dice6Count === 1) {
+        userResult.grandeSuite = 6;
+        userResult.result = ValueName.GRANDE_SUITE;
+    }
+    else if (dice1Count > 0 && dice2Count > 0 && dice3Count > 0 && dice4Count > 0) {
+        userResult.petiteSuite = 4;
+        userResult.result = ValueName.PETITE_SUITE;
+    }
+    else if (dice2Count > 0 && dice3Count > 0 && dice4Count > 0 && dice5Count > 0) {
+        userResult.petiteSuite = 5;
+        userResult.result = ValueName.PETITE_SUITE;
+    }
+    else if (dice3Count > 0 && dice4Count > 0 && dice5Count > 0 && dice6Count > 0) {
+        userResult.petiteSuite = 6;
+        userResult.result = ValueName.PETITE_SUITE;
+    }
+    return userResult;
+}
+
+export function SearchBrelan(userResult: UserResult,
+    dice1Count: number, dice2Count: number, dice3Count: number,
+    dice4Count: number, dice5Count: number, dice6Count: number): UserResult {
+    // recherche des brelans
+    if (dice1Count === 3) {
+        userResult.brelan = 1;
+    }
+    if (dice2Count === 3) {
+        userResult.brelan = 2;
+    }
+    if (dice3Count === 3) {
+        userResult.brelan = 3;
+    }
+    if (dice4Count === 3) {
+        userResult.brelan = 4;
+    }
+    if (dice5Count === 3) {
+        userResult.brelan = 5;
+    }
+    if (dice6Count === 3) {
+        userResult.brelan = 6;
+    }
+    return userResult;
+}
+
+
+export function SearchPaire(userResult: UserResult,
+    dice1Count: number, dice2Count: number, dice3Count: number,
+    dice4Count: number, dice5Count: number, dice6Count: number): UserResult {
+    let paire1: number = 0;
+    let paire2: number = 0;
+
+    if (userResult.petiteSuite === 0) {
+        // recherche des doubles
+        if (dice1Count === 2) {
+            if (paire1 === 0) {
+                paire1 = 1;
+            } else {
+                paire2 = 1;
+            }
+        }
+        if (dice2Count === 2) {
+            if (paire1 === 0) {
+                paire1 = 2;
+            } else {
+                paire2 = 2;
+            }
+        }
+        if (dice3Count === 2) {
+            if (paire1 === 0) {
+                paire1 = 3;
+            } else {
+                paire2 = 3;
+            }
+        }
+        if (dice4Count === 2) {
+            if (paire1 === 0) {
+                paire1 = 4;
+            } else {
+                paire2 = 4;
+            }
+        }
+        if (dice5Count === 2) {
+            if (paire1 === 0) {
+                paire1 = 5;
+            } else {
+                paire2 = 5;
+            }
+        }
+        if (dice6Count === 2) {
+            if (paire1 === 0) {
+                paire1 = 6;
+            } else {
+                paire2 = 6;
+            }
+        }
+        if (paire1 !== 0 && paire2 !== 0) {
+            if (paire1 > paire2) {
+                userResult.paire1 = paire1;
+                userResult.paire2 = paire2;
+                userResult.result = ValueName.DOUBLE_PAIRE;
+            }
+            if (paire2 > paire1) {
+                userResult.paire1 = paire2;
+                userResult.paire2 = paire1;
+                userResult.result = ValueName.DOUBLE_PAIRE;
+            }
+        }
+        else if (paire1 !== 0 && paire2 === 0) {
+            userResult.paire1 = paire1;
+            if (userResult.brelan !== 0) {
+                userResult.result = ValueName.FULL;
+            }
+            else {
+                userResult.result = ValueName.PAIRE;
+            }
+        }
+        else if (paire1 === 0 && userResult.brelan !== 0) {
+            userResult.result = ValueName.BRELAN;
+        }
+    }
+    return userResult;
 }

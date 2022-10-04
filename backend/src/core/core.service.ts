@@ -6,9 +6,11 @@ import { DiceDto } from '../dices/dto/dice.dto';
 import { ValidPlay } from '../lobby-user/dto/lobby-user.dto';
 import { LobbyUser } from '../lobby-user/entities/lobby-user.entity';
 import { LobbyUserService } from '../lobby-user/lobby-user.service';
-import { Core } from './core';
+import { Core, UserResult } from './core';
 import { CreateCoreDto } from './dto/create-core.dto';
 import { UpdateCoreDto } from './dto/update-core.dto';
+import { CoreResultDto } from './dto/core-result.dto';
+import { LobbyService } from '../lobby/lobby.service';
 
 export class MyDice {
   diceId: number;
@@ -27,6 +29,7 @@ export class CoreService {
   constructor(
     private lobbyUserService: LobbyUserService,
     private dicesService: DicesService,
+    private lobbyService: LobbyService,
     private core: Core,
   ) { }
 
@@ -146,14 +149,8 @@ export class CoreService {
 
 
 
-  async CalculateScore(lobbyId: number) {
-    if (lobbyId === 0) {
-      this.core.CalculateScore(null)
-    }
-    else {
-      const lobbyUsers: LobbyUser[] = await this.lobbyUserService.findAllByLobby(lobbyId);
-      this.core.CalculateScore(lobbyUsers);
-    }
-
+  async CalculateScore(lobbyId: number): Promise<UserResult[] | UserResult> {
+    const lobby: CoreResultDto = await this.lobbyService.findLobbyForResult(lobbyId);
+    return this.core.CalculateScore(lobby);
   }
 }

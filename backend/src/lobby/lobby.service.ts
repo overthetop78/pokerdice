@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CoreResultDto } from '../core/dto/core-result.dto';
 import { CreateLobbyDto } from './dto/create-lobby.dto';
 import { UpdateLobbyDto } from './dto/update-lobby.dto';
 import { Lobby } from './entities/lobby.entity';
 
 @Injectable()
 export class LobbyService {
+
   constructor(
     @InjectRepository(Lobby)
     private lobbyRepository: Repository<Lobby>,
@@ -61,5 +63,15 @@ export class LobbyService {
       where: { id: id },
     });
     return this.lobbyRepository.remove(await lobby);
+  }
+
+  async findLobbyForResult(lobbyId: number): Promise<CoreResultDto> {
+    const lobby = await this.lobbyRepository.createQueryBuilder('lobby')
+      .leftJoinAndSelect('lobby.users', 'users')
+      .leftJoinAndSelect('users.user', 'user')
+      .where('lobby.id = :lobbyId', { lobbyId: lobbyId })
+      .getOne();
+    const result = new CoreResultDto();
+    return result;
   }
 }

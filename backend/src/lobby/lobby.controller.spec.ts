@@ -13,6 +13,7 @@ describe('LobbyController', () => {
     }).compile();
 
     controller = module.get<LobbyController>(LobbyController);
+    service = module.get<LobbyService>(LobbyService);
   });
 
   it('should be defined', () => {

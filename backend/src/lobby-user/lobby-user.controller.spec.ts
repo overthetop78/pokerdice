@@ -15,6 +15,7 @@ describe('LobbyUserController', () => {
     }).compile();
 
     controller = module.get<LobbyUserController>(LobbyUserController);
+    service = module.get<LobbyUserService>(LobbyUserService);
   });
 
   it('should be defined', () => {
