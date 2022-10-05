@@ -15,7 +15,7 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('user')
 @ApiTags('User')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -28,12 +28,12 @@ export class UserController {
   }
 
   @Get('/username/:username')
-  findOneByUsername(@Param('username') username: string) {
+  findOneByUsername(@Param('username') username: string): Promise<UpdateUserDto> {
     return this.userService.findOneByUsername(username);
   }
 
   @Get('/email/:email')
-  findOne(@Param('email') email: string) {
+  findOne(@Param('email') email: string): Promise<UpdateUserDto> {
     return this.userService.findOneByEmail(email);
   }
 

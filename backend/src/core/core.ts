@@ -36,7 +36,7 @@ export class Core {
         private dicesService: DicesService,
     ) { }
 
-    async CheckRunGame(lobbyId: number) {
+    async CheckRunGame(lobbyId: number): Promise<boolean | number[]> {
         const lobbyUsersId: number[] = [];
         const lobbyUsers = await this.lobbyUserService.findAllByLobby(lobbyId);
         lobbyUsers.forEach((lobbyUser) => {

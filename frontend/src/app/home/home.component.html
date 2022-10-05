@@ -1,0 +1,21 @@
+<div class="home">
+    <mat-card class="login" *ngIf="!isConnected">
+        <mat-card-header>
+            <mat-card-title>
+                <h1>Log in</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="loginForm" (ngSubmit)="Login()">
+                <mat-form-field>
+                    <input matInput placeholder="Email" formControlName="email">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput placeholder="Password" formControlName="password" type="password">
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Log in</button>
+                <button mat-raised-button color="accent" type="button" (click)="Register()">Register</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
