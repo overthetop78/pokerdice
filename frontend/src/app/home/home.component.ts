@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IUser, UserRole } from '../services/interfaces/i-user';
 import { ServicesService } from '../services/services.service';
 
@@ -10,10 +11,11 @@ import { ServicesService } from '../services/services.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private service: ServicesService) { }
+  constructor(private fb: FormBuilder, private service: ServicesService, private router: Router) { }
 
   isConnected = false;
   user: IUser = {
+    username: '',
     email: '',
     password: '',
     role: UserRole.USER,
@@ -32,6 +34,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     if (localStorage.getItem('access-token')) {
       this.isConnected = true;
+      let email = localStorage.getItem('email')
+      if (email != null)
+        this.GetUser(email)
     }
   }
 
@@ -48,16 +53,20 @@ export class HomeComponent implements OnInit {
   }
 
   Register() {
-    console.log(this.loginForm.value);
+    this.router.navigate(['register'])
   }
 
   GetUser(email: string): IUser {
     this.service.getUser(email).toPromise().then(async (res: any) => {
-      console.log(res);
       this.user = await res;
-      console.log("user", this.user);
-
     });
     return this.user;
+  }
+
+  disconnect() {
+    localStorage.removeItem('access-token')
+    localStorage.removeItem('email')
+    this.isConnected = false;
+    this.router.navigate(['home'])
   }
 }

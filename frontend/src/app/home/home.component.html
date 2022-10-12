@@ -18,4 +18,12 @@
             </form>
         </mat-card-content>
     </mat-card>
+    <mat-card class="home" *ngIf="isConnected">
+        <mat-card-header>
+            Bienvenue {{ user.username }}
+        </mat-card-header>
+        <mat-card-content>
+            <button mat-raised-button color="warn" (click)="disconnect()">Se déconnecter</button>
+        </mat-card-content>
+    </mat-card>
 </div>
