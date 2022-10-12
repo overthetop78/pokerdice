@@ -18,12 +18,49 @@
             </form>
         </mat-card-content>
     </mat-card>
-    <mat-card class="home" *ngIf="isConnected">
-        <mat-card-header>
-            Bienvenue {{ user.username }}
-        </mat-card-header>
-        <mat-card-content>
-            <button mat-raised-button color="warn" (click)="disconnect()">Se déconnecter</button>
-        </mat-card-content>
-    </mat-card>
+    <div class="dashboard" *ngIf="isConnected">
+        <mat-card class="dashboard">
+            <mat-card-header>
+                <mat-card-title>
+                    <h2>Welcome {{ user.username }}</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="lobby" *ngFor="let lobby of lobbies" (click)="getLobby(lobby)">
+                    <div class="lobby-name">{{ lobby.name }}</div>
+                    <div class="lobby-owner">{{ lobby.owner.username }}</div>
+                    <div class="lobby-password" *ngIf="lobby.password != null">
+                        <mat-icon>lock</mat-icon>
+                    </div>
+                    <div class="lobby-password" *ngIf="lobby.password == null">
+                        <mat-icon>lock_open</mat-icon>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="lobby">
+            <mat-card-header>
+                <mat-card-title>
+                    <h1>{{ lobbyInfo.name }}</h1>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="lobby-info">
+                    <div class="lobby-owner">Owner : {{ lobbyInfo.owner.username }}</div>
+                    <div class="lobby-players" *ngIf="lobbyInfo.users.length != 0">
+                        <div class="lobby-player" *ngFor="let player of lobbyInfo.users">
+                            <div>{{ player.position }} - {{ player.user.username }} - {{ player.validPlay }}</div>
+
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div class="button">
+            <button mat-raised-button color="primary" type="button" (click)="CreateLobby()">Create lobby</button>
+        </div>
+        <div class="button">
+            <button mat-raised-button color="warn" (click)="logout()">Log Out</button>
+        </div>
+    </div>
 </div>

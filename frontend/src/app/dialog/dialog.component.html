@@ -1,0 +1,15 @@
+<!-- Dialog -->
+<mat-dialog-content>
+    <div class="dialog-content">
+        <div class="dialog-header">
+            <h2 class="dialog-title">{{ data.title }}</h2>
+            <p class="dialog-subtitle">{{ data.subtitle }}</p>
+        </div>
+        <div class="dialog-body">
+            <p class="dialog-message">{{ data.message }}</p>
+        </div>
+        <div class="dialog-footer">
+            <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{ data.button }}</button>
+        </div>
+    </div>
+</mat-dialog-content>

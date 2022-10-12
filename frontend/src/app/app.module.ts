@@ -3,10 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar/navbar.component';
+import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './register/register.component';
+import { DialogComponent } from './dialog/dialog.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+
 
 // Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -21,10 +27,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker'
-import { MatNativeDateModule } from '@angular/material/core';
-import { HomeComponent } from './home/home.component';
-import { AuthInterceptor } from './auth.interceptor';
-import { RegisterComponent } from './register/register.component';
+import { MatCommonModule, MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 
 
@@ -42,7 +47,9 @@ const materialComponents = [
   MatGridListModule,
   MatButtonModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatDialogModule,
+  MatCommonModule,
 ];
 
 @NgModule({
@@ -50,7 +57,8 @@ const materialComponents = [
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    RegisterComponent
+    RegisterComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +70,7 @@ const materialComponents = [
     ...materialComponents,
   ],
   providers: [{ provide: 'HTTP_INTERCEPTOR', useClass: AuthInterceptor, multi: true },],
+  entryComponents: [DialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

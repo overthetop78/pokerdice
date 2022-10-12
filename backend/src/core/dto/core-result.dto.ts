@@ -4,25 +4,24 @@ import { CoreUserDto } from "./core-user.dto";
 
 export class CoreResultDto {
 
-    @ApiProperty({ required: true, example: 1 })
-    id: number;
+  @ApiProperty({ required: true, example: 1 })
+  id: number;
 
-    @ApiProperty({ required: true, example: "Lobby Test" })
-    name: string;
+  @ApiProperty({ required: true, example: "Lobby Test" })
+  name: string;
 
-    @ApiProperty({ required: false, default: null })
-    password: string;
+  @ApiProperty({ required: false, default: null })
+  password: string;
 
-    @ApiProperty({ required: true })
-    owner: CoreUserDto;
+  @ApiProperty({ required: true })
+  owner: CoreUserDto;
 
-    @ApiProperty({ required: true })
-    users: CoreUserLobbyDto[];
+  @ApiProperty({ required: true })
+  users: CoreUserLobbyDto[];
 
-    @ApiProperty({ required: false, default: Date.now() })
-    createdAt: Date;
+  @ApiProperty({ required: false, default: Date.now() })
+  createdAt: Date;
 
-    @ApiProperty({ required: false, default: Date.now() })
-    updatedAt: Date;
-  data: import("/var/www/pokerdice/fil_rouge_4.0.3_truche_gael/backend/src/lobby/entities/lobby.entity").Lobby;
+  @ApiProperty({ required: false, default: Date.now() })
+  updatedAt: Date;
 }
