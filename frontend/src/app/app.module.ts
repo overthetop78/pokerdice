@@ -29,6 +29,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatCommonModule, MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CreateLobbyComponent } from './create-lobby/create-lobby.component';
+import { LobbyComponent } from './lobby/lobby.component';
+import { LobbyPasswordComponent } from './lobby-password/lobby-password.component';
 
 
 
@@ -59,6 +62,9 @@ const materialComponents = [
     HomeComponent,
     RegisterComponent,
     DialogComponent,
+    CreateLobbyComponent,
+    LobbyComponent,
+    LobbyPasswordComponent,
   ],
   imports: [
     BrowserModule,

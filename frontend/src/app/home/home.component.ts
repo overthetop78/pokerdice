@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { CreateLobbyComponent } from '../create-lobby/create-lobby.component';
+import { LobbyPasswordComponent } from '../lobby-password/lobby-password.component';
 import { ILobby } from '../services/interfaces/i-lobby';
+import { ValidPlay } from '../services/interfaces/i-player';
 import { IUser, UserRole } from '../services/interfaces/i-user';
 import { ServicesService } from '../services/services.service';
 
@@ -12,9 +16,11 @@ import { ServicesService } from '../services/services.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private service: ServicesService, private router: Router) { }
+  constructor(private fb: FormBuilder, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
 
   isConnected = false;
+  isAwaitToPlayer = false;
+
   user: IUser = {
     username: '',
     email: '',
@@ -52,6 +58,7 @@ export class HomeComponent implements OnInit {
       let email = localStorage.getItem('email')
       if (email != null) {
         this.GetUser(email)
+        this.getLobbies();
       }
     }
   }
@@ -106,11 +113,56 @@ export class HomeComponent implements OnInit {
       },
       users: lobby.users
     }
+    if (this.lobbyInfo.users.length != 0) {
+      let isPlayer = false;
+      this.lobbyInfo.users.forEach(user => {
+        if (!isPlayer) {
+          if (user.validPlay != ValidPlay.ACCEPTED && user.validPlay != ValidPlay.WAITING_PLAYING) {
+            this.isAwaitToPlayer = false;
+            isPlayer = true;
+          }
+          else {
+            this.isAwaitToPlayer = true;
+          }
+        }
+      });
+    }
+    else {
+      this.isAwaitToPlayer = true;
+    }
 
   }
 
   CreateLobby() {
-    console.log("Create Lobby");
+    this.dialog.open(CreateLobbyComponent, {
 
+    });
+    this.dialog.afterAllClosed.subscribe(() => {
+      this.getLobbies();
+    }
+    );
   }
+
+  joinLobby(lobbyId: number, lobbyPassword: string | null) {
+    if (lobbyPassword != null) {
+      this.dialog.open(LobbyPasswordComponent, {
+        data: {
+          lobbyId: lobbyId,
+          lobbyPassword: lobbyPassword
+        }
+      });
+      if (this.checkLobbyPassword(lobbyPassword)) {
+        this.router.navigate(['lobby'], { queryParams: { lobbyId: lobbyId } });
+      }
+    }
+    else {
+      console.log(lobbyId);
+      this.router.navigate(['lobby'], { queryParams: { lobbyId: lobbyId } });
+    }
+  }
+
+  checkLobbyPassword(lobbyPassword: string): Boolean {
+    return false;
+  }
+
 }

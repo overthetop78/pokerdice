@@ -362,7 +362,6 @@ describe('CoreController', () => {
       ],
       createdAt: new Date('2021-05-01T00:00:00.000Z'),
       updatedAt: new Date('2021-05-01T00:00:00.000Z'),
-      data: new Lobby
     };
 
     const result = core.CalculateScore(lobbyTest);
@@ -479,7 +478,6 @@ describe('CoreController', () => {
       ],
       createdAt: new Date('2021-05-01T00:00:00.000Z'),
       updatedAt: new Date('2021-05-01T00:00:00.000Z'),
-      data: new Lobby
     };
 
     const result = core.CalculateScore(lobbyTest);
@@ -596,7 +594,6 @@ describe('CoreController', () => {
       ],
       createdAt: new Date('2021-05-01T00:00:00.000Z'),
       updatedAt: new Date('2021-05-01T00:00:00.000Z'),
-      data: new Lobby
     };
 
     const result = core.CalculateScore(lobbyTest);
@@ -713,7 +710,6 @@ describe('CoreController', () => {
       ],
       createdAt: new Date('2021-05-01T00:00:00.000Z'),
       updatedAt: new Date('2021-05-01T00:00:00.000Z'),
-      data: new Lobby
     };
 
     const result = core.CalculateScore(lobbyTest);
@@ -743,5 +739,6 @@ describe('CoreController', () => {
       result: "petite suite"
     }]);
   });
+
 
 });

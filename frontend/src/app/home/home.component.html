@@ -45,14 +45,15 @@
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div class="lobby-info">
+                <div class="lobby-info" *ngIf="lobbyInfo.name != ''">
                     <div class="lobby-owner">Owner : {{ lobbyInfo.owner.username }}</div>
                     <div class="lobby-players" *ngIf="lobbyInfo.users.length != 0">
                         <div class="lobby-player" *ngFor="let player of lobbyInfo.users">
                             <div>{{ player.position }} - {{ player.user.username }} - {{ player.validPlay }}</div>
-
                         </div>
                     </div>
+                    <button mat-raised-button color="primary" *ngIf="isAwaitToPlayer"
+                        (click)="joinLobby(lobbyInfo.id, lobbyInfo.password)">Join Lobby</button>
                 </div>
             </mat-card-content>
         </mat-card>

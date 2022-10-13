@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ILogin } from './interfaces/i-login';
 import { UrlBackend } from './interfaces/url-backend';
+import { IUser } from './interfaces/i-user';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +26,10 @@ export class ServicesService {
 
   getLobbies() {
     return this.http.get(`${UrlBackend.URL_BACKEND}/lobby`);
+  }
+
+  createLobby(lobby: any) {
+    return this.http.post(`${UrlBackend.URL_BACKEND}/lobby`, lobby);
   }
 
 }
