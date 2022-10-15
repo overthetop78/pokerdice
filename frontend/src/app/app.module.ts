@@ -57,28 +57,27 @@ const materialComponents = [
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    HomeComponent,
-    RegisterComponent,
-    DialogComponent,
-    CreateLobbyComponent,
-    LobbyComponent,
-    LobbyPasswordComponent,
-    GameComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    ...materialComponents,
-  ],
-  providers: [{ provide: 'HTTP_INTERCEPTOR', useClass: AuthInterceptor, multi: true },],
-  entryComponents: [DialogComponent],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        HomeComponent,
+        RegisterComponent,
+        DialogComponent,
+        CreateLobbyComponent,
+        LobbyComponent,
+        LobbyPasswordComponent,
+        GameComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        ...materialComponents,
+    ],
+    providers: [{ provide: 'HTTP_INTERCEPTOR', useClass: AuthInterceptor, multi: true },],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
