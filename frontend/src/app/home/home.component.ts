@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControlName, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormControlName, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CreateLobbyComponent } from '../create-lobby/create-lobby.component';
@@ -16,7 +16,7 @@ import { ServicesService } from '../services/services.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
+  constructor(private fb: UntypedFormBuilder, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
 
   isConnected = false;
   isAwaitToPlayer = false;

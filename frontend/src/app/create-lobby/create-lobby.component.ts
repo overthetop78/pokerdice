@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -30,7 +30,7 @@ export class CreateLobbyComponent implements OnInit {
     id: 0
   }
 
-  constructor(private fb: FormBuilder, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
+  constructor(private fb: UntypedFormBuilder, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     if (localStorage.getItem('email') != null) {

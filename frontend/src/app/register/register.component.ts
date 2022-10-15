@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormControlName, Form, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
   });
   ageMax: Date = new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18);
 
-  constructor(private fb: FormBuilder, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
+  constructor(private fb: UntypedFormBuilder, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
   }

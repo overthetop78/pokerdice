@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ export class LobbyPasswordComponent implements OnInit {
   lobbyId: number = 0;
   lobbyPassword: string = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
+  constructor(private router: Router, private route: ActivatedRoute, private fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   checkPasswordForm = this.fb.group({
