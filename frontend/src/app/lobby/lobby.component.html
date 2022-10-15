@@ -1,1 +1,45 @@
-<p>lobby works!</p>
+<div class="lobby">
+    <mat-card *ngIf="lobby">
+        <mat-card-header>
+            <mat-card-title>
+                <h1>{{ lobby.name }}</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="lobby-info" *ngIf="lobby.name != '' || lobby.name != null">
+                <div class="lobby-owner">Owner : {{ lobby.owner.username }}</div>
+                <div class="lobby-players" *ngIf="lobby.users.length != 0">
+                    <div class="lobby-player" *ngFor="let player of lobby.users">
+                        <div>
+                            {{ player.position }} - {{ player.user.username }} - {{ player.validPlay }}
+                            <div *ngIf="user.id === player.user.id">
+                                <button mat-raised-button color="primary" *ngIf="!isPlaying"
+                                    (click)="setPlay(player.id, true)">Play</button>
+                                <button mat-raised-button color="secondary" *ngIf="isPlaying"
+                                    (click)="setPlay(player.id, false)">Wait</button>
+                                <button mat-raised-button color="warn" (click)="leaveLobby()">Leave</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="user">
+                <mat-card *ngIf="user.id === lobby.owner.id">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h1>Admin</h1>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="lobby-admin">
+                            <div class="lobby-admin-start">
+                                <button mat-raised-button color="primary" (click)="startGame()">Start Game</button>
+                                <button mat-raised-button color="warn" (click)="deleteLobby()">Delete Lobby</button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

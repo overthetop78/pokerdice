@@ -1,0 +1,83 @@
+mat-card {
+    background-color: green;
+    margin: 20px auto;
+    width: 80%;
+    height: 80%;
+}
+
+mat-card-header {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    font-size: 24px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+mat-card-title {
+    color: green;
+}
+
+h1 {
+    color: green;
+    font-size: 2em;
+}
+
+mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 80vh;
+}
+
+div.players {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+mat-card.players {
+    width: 100px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+}
+
+mat-card.players mat-card-header {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    height: 40px;
+    border-radius: 10px;
+}
+
+mat-card.players mat-card-title {
+    color: green;
+}
+
+mat-card.players h1 {
+    color: green;
+    font-size: 1em;
+}
+
+mat-card.players mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    align-content: center;
+    height: 100%;
+}

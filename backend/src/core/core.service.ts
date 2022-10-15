@@ -53,21 +53,34 @@ export class CoreService {
     return `This action removes a #${id} core`;
   }
 
+
+  async StartGame(lobbyId: number): Promise<String | Error | number[]> {
+    const lobbyUsersId = await this.CheckRunGame(lobbyId);
+    if (lobbyUsersId) {
+      console.log('StartGame lobbyUsersId', lobbyUsersId);
+      return this.RandomListPlayer(lobbyUsersId);
+    }
+    else {
+      return Error('Not all players have accepted');
+    }
+  }
+
   /**
    * @description Check if the game can be started
    * @param lobbyId Identifiant du Lobby
    * @returns lobbyUserId liste des identifiants des joueurs du lobby si tous les joueurs ont 'ACCEPTED' sinon renvoi false)
    */
-  async CheckRunGame(lobbyId: number): Promise<number[] | boolean> {
+  async CheckRunGame(lobbyId: number): Promise<number[]> {
     const lobbyUsersId: number[] = [];
     const lobbyUsers: LobbyUser[] = await this.lobbyUserService.findAllByLobby(
       lobbyId,
     );
-    for (let i = 0; i < lobbyUsers.length; i++) {
-      if (lobbyUsers[i].validPlay === ValidPlay.ACCEPTED) {
-        lobbyUsersId.push(lobbyUsers[i].id);
-      } else {
-        return false;
+    for (const lobbyUser of lobbyUsers) {
+      if (lobbyUser.validPlay === ValidPlay.ACCEPTED) {
+        lobbyUsersId.push(lobbyUser.id);
+      }
+      else {
+        return [];
       }
     }
     return lobbyUsersId;

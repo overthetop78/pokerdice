@@ -35,16 +35,9 @@ export class CoreController {
     return this.coreService.remove(+id);
   }
 
-  @Get('Game/CheckRunGame/:lobbyId')
-  @ApiParam({ name: 'lobbyId', type: Number })
-  CheckRunGame(@Param('lobbyId') lobbyId: string) {
-    return this.coreService.CheckRunGame(+lobbyId);
-  }
-
-  @Post('Game/RandomListPlayer')
-  @ApiBody({ type: [Number] })
-  RandomListPlayer(@Body() lobbyUsersId: number[]) {
-    return this.coreService.RandomListPlayer(lobbyUsersId);
+  @Get('Game/StartGame/:lobbyId')
+  StartGame(@Param('lobbyId') lobbyId: number): Promise<String | Error | number[]> {
+    return this.coreService.StartGame(lobbyId);
   }
 
   @Get('Game/FirstLaunch/:lobbyUserId')

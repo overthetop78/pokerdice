@@ -151,17 +151,31 @@ export class HomeComponent implements OnInit {
           lobbyPassword: lobbyPassword
         }
       });
-      if (this.checkLobbyPassword(lobbyPassword)) {
-        this.router.navigate(['lobby'], { queryParams: { lobbyId: lobbyId } });
-      }
+      this.dialog.afterAllClosed.subscribe(() => {
+        if (this.checkLobbyPassword(lobbyPassword)) {
+          let lobby = this.lobbies.find(lobby => lobby.id == lobbyId);
+          if (lobby != undefined) {
+            this.service.addUserToLobby(this.user, lobby).subscribe((res: any) => {
+              this.router.navigate(['lobby', lobbyId]);
+            });
+          }
+        }
+      });
     }
     else {
-      console.log(lobbyId);
-      this.router.navigate(['lobby'], { queryParams: { lobbyId: lobbyId } });
+      let lobby = this.lobbies.find(lobby => lobby.id == lobbyId);
+      if (lobby != undefined) {
+        this.service.addUserToLobby(this.user, lobby).subscribe((res: any) => {
+          this.router.navigate(['lobby', lobbyId]);
+        });
+      }
     }
   }
 
   checkLobbyPassword(lobbyPassword: string): Boolean {
+    if (lobbyPassword == this.lobbyInfo.password) {
+      return true;
+    }
     return false;
   }
 

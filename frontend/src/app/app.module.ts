@@ -32,6 +32,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CreateLobbyComponent } from './create-lobby/create-lobby.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { LobbyPasswordComponent } from './lobby-password/lobby-password.component';
+import { GameComponent } from './game/game.component';
 
 
 
@@ -65,6 +66,7 @@ const materialComponents = [
     CreateLobbyComponent,
     LobbyComponent,
     LobbyPasswordComponent,
+    GameComponent,
   ],
   imports: [
     BrowserModule,

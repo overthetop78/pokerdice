@@ -1,0 +1,55 @@
+<div class="game">
+    <mat-card *ngIf="lobby">
+        <mat-card-header>
+            <mat-card-title>
+                <h1>{{ lobby.name }}</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="players">
+                <mat-card *ngFor="let player of players" class="players">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h1>{{ player.user.username }}</h1>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="player-info">
+                            <div class="player-points">
+                                <table>
+                                    <tr>
+                                        <th>Position</th>
+                                        <th>Score</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ player.position }}</td>
+                                        <td>{{ player.points }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="player-score">
+                                <table>
+                                    <tr>
+                                        <th>Win</th>
+                                        <th>Lose</th>
+                                        <th>Draw</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ player.win }}</td>
+                                        <td>{{ player.lose }}</td>
+                                        <td>{{ player.draw }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="player-tour">Tour : {{ player.tour }}</div>
+                            <div class="player-validPlay">
+                                <mat-icon>{{ getLogo(player.validPlay) }}</mat-icon>
+                            </div>
+                            <div class="player-dices">Dices : {{ player.dices }}</div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

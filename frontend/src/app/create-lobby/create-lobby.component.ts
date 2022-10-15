@@ -52,22 +52,62 @@ export class CreateLobbyComponent implements OnInit {
       password: this.createLobbyForm.value.lobbyPassword || null,
       owner: this.user
     }
-    this.service.createLobby(lobby).toPromise().then((res: any) => {
-      console.log(res);
-
-      if (res != null) {
-        this.createLobbyForm.reset();
-        //this.router.navigate(['/lobby', res.id]);
-        this.dialog.open(DialogComponent,
-          {
-            data: {
-              title: 'Lobby created',
-              message: 'Your lobby has been created successfully',
-              button: 'Ok'
-            }
-          });
-      }
-      else {
+    this.service.createLobby(lobby).toPromise()
+      .then((res: any) => {
+        console.log(res);
+        if (res != null) {
+          this.createLobbyForm.reset();
+          this.service.addUserToLobby(this.user, res).toPromise()
+            .then((res: any) => {
+              console.log(res);
+              if (res != null) {
+                this.router.navigate(['/lobby', res.lobby.id]);
+                this.dialog.open(DialogComponent,
+                  {
+                    data: {
+                      title: 'Lobby created',
+                      message: 'Your lobby has been created successfully',
+                      button: 'Ok'
+                    }
+                  });
+              }
+              else {
+                this.dialog.open(DialogComponent,
+                  {
+                    data: {
+                      title: 'Error',
+                      message: 'Error creating lobby',
+                      button: 'Ok'
+                    }
+                  });
+              }
+            })
+            .catch((err: any) => {
+              console.log(err);
+              this.dialog.open(DialogComponent,
+                {
+                  data: {
+                    title: 'Error',
+                    message: 'Error creating lobby',
+                    button: 'Ok'
+                  }
+                });
+              return;
+            });
+        }
+        else {
+          this.dialog.open(DialogComponent,
+            {
+              data: {
+                title: 'Error',
+                message: 'An error occured while creating your lobby',
+                button: 'Ok'
+              }
+            });
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
         this.dialog.open(DialogComponent,
           {
             data: {
@@ -76,8 +116,8 @@ export class CreateLobbyComponent implements OnInit {
               button: 'Ok'
             }
           });
-      }
-    });
+        return;
+      });
   }
 
 }
