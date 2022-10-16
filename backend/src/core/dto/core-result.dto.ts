@@ -19,9 +19,4 @@ export class CoreResultDto {
   @ApiProperty({ required: true })
   users: CoreUserLobbyDto[];
 
-  @ApiProperty({ required: false, default: Date.now() })
-  createdAt: Date;
-
-  @ApiProperty({ required: false, default: Date.now() })
-  updatedAt: Date;
 }

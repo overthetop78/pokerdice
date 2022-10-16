@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MyDice } from '../core/core.service';
 import { Repository } from 'typeorm';
-import { CreateDiceDto } from './dto/create-dice.dto';
 import { DiceDto } from './dto/dice.dto';
 import { UpdateDiceDto } from './dto/update-dice.dto';
 import { Dice } from './entities/dice.entity';
@@ -11,7 +11,7 @@ export class DicesService {
 
   constructor(
     @InjectRepository(Dice)
-    private diceRepository: Repository<Dice>,
+    private diceRepository: Repository<Dice>
   ) { }
 
   create(createDiceDto: DiceDto) {
@@ -36,6 +36,12 @@ export class DicesService {
 
   async findOneByLobbyUserId(lobbyUserId: number): Promise<Dice> {
     return await this.diceRepository.findOne({
+      where: { lobbyUser: { id: lobbyUserId } },
+    });
+  }
+
+  async findAllByLobbyUserId(lobbyUserId: number): Promise<Dice[]> {
+    return await this.diceRepository.find({
       where: { lobbyUser: { id: lobbyUserId } },
     });
   }

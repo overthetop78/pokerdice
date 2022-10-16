@@ -71,7 +71,6 @@ export class LobbyService {
       .leftJoinAndSelect('users.user', 'user')
       .where('lobby.id = :lobbyId', { lobbyId: lobbyId })
       .getOne();
-    const result = new CoreResultDto();
-    return result;
+    return lobby;
   }
 }

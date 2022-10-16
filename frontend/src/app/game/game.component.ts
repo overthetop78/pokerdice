@@ -6,6 +6,14 @@ import { ILobby } from '../services/interfaces/i-lobby';
 import { IPlayer, ValidPlay } from '../services/interfaces/i-player';
 import { IUser } from '../services/interfaces/i-user';
 import { ServicesService } from '../services/services.service';
+// Font Awesome
+import { faDiceOne, faDiceTwo, faDiceThree, faDiceFour, faDiceFive, faDiceSix, faDice, IconPrefix } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { IconName } from '@fortawesome/free-brands-svg-icons';
+import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
+import { IDice } from '../services/interfaces/i-dice';
+import { IUserResult } from '../services/interfaces/i-user-result';
+import { ValueName } from '../services/interfaces/value-name.enum';
 
 @Component({
   selector: 'app-game',
@@ -14,12 +22,28 @@ import { ServicesService } from '../services/services.service';
 })
 export class GameComponent implements OnInit {
 
+  //Font Awesome
+  faDiceOne = faDiceOne;
+  faDiceTwo = faDiceTwo;
+  faDiceThree = faDiceThree;
+  faDiceFour = faDiceFour;
+  faDiceFive = faDiceFive;
+  faDiceSix = faDiceSix;
+  faDice = faDice;
+
   lobbyId!: number;
   board: any;
   lobby!: ILobby;
   players: IPlayer[] = [];
   user!: IUser;
   me!: IPlayer;
+  result: IUserResult = {
+    idLobbyUser: 0,
+    result: ValueName.NULL
+  }
+
+  secondLaunch: boolean = false;
+  isPlaying: boolean = false;
 
   constructor(private route: ActivatedRoute, private service: ServicesService, private router: Router, private dialog: MatDialog) { }
 
@@ -49,8 +73,10 @@ export class GameComponent implements OnInit {
 
   getPlayers(lobby: ILobby) {
     lobby.users.forEach(user => {
+      user.dices = [];
       if (user.user.id === this.user.id) {
         this.me = user;
+        console.log(this.me);
       }
       else {
         this.players.push(user);
@@ -78,11 +104,124 @@ export class GameComponent implements OnInit {
   getLogo(validPlay: ValidPlay) {
     switch (validPlay) {
       case ValidPlay.PLAYING:
+        this.isPlaying = true;
         return 'play_circle_outline';
       case ValidPlay.WAITING_TOUR:
+        this.isPlaying = false;
         return 'pause_circle_outline';
       default:
         return 'pause_circle_outline';
+    }
+  }
+
+  getDice(dice: any): IconDefinition {
+    switch (dice.value) {
+      case 1:
+        return faDiceOne;
+      case 2:
+        return faDiceTwo;
+      case 3:
+        return faDiceThree;
+      case 4:
+        return faDiceFour;
+      case 5:
+        return faDiceFive;
+      case 6:
+        return faDiceSix;
+      default:
+        return faDice;
+    }
+  }
+
+  switchDice(dice: IDice): boolean {
+    if (dice.isLocked) {
+      dice.isLocked = false;
+      this.service.lockDice(dice).toPromise().then((res: any) => {
+      }).catch((err: Error) => {
+        console.log(err);
+        this.openErrorDialog();
+      });
+      return false;
+    }
+    else {
+      dice.isLocked = true;
+      this.service.lockDice(dice).toPromise().then((res: any) => {
+      }).catch((err: Error) => {
+        console.log(err);
+        this.openErrorDialog();
+      });
+      return true;
+    }
+  }
+
+  DiceState(isLocked: boolean): string {
+    if (isLocked) {
+      return 'locked';
+    }
+    else {
+      return 'unlocked';
+    }
+  }
+
+  rollDices() {
+    if (!this.secondLaunch) {
+      this.service.rollDices(this.me, false).toPromise().then(async (res: any) => {
+        console.log("Dices rolled", res);
+        this.me.dices = res;
+        this.secondLaunch = true;
+        this.result = await this.getResultDices(this.me.id, this.me.dices);
+      }).catch((err: Error) => {
+        console.log(err);
+        this.openErrorDialog();
+      });
+    }
+    else {
+      this.service.rollDices(this.me, true).toPromise().then(async (res: any) => {
+        console.log("Dices rolled", res);
+        this.me.dices = res;
+        this.secondLaunch = false;
+        this.result = await this.getResultDices(this.me.id, this.me.dices);
+      }).catch((err: Error) => {
+        console.log(err);
+        this.openErrorDialog();
+      });
+    }
+  }
+
+  async getResultDices(lobbyUserId: number, dices: IDice[]): Promise<IUserResult> {
+    return await this.service.getResultDices(lobbyUserId, dices).toPromise().then(async (res: any) => {
+      return await res;
+    }
+    ).catch((err: Error) => {
+      console.log(err);
+      this.openErrorDialog();
+      return null;
+    }
+    );
+  }
+
+  getResultName(result: IUserResult): string {
+    switch (result.result) {
+      case ValueName.NULL:
+        return 'Aucun';
+      case ValueName.BRELAN:
+        return 'Brelan' + ' de ' + result.brelan;
+      case ValueName.CARRE:
+        return 'Carré' + ' de ' + result.carre;
+      case ValueName.FULL:
+        return 'Full' + ' de ' + result.brelan + ' aux ' + result.paire1;
+      case ValueName.PETITE_SUITE:
+        return 'Petite suite' + ' de ' + result.petiteSuite;
+      case ValueName.GRANDE_SUITE:
+        return 'Grande suite' + ' de ' + result.grandeSuite;
+      case ValueName.DOUBLE_PAIRE:
+        return 'Double paire' + ' de ' + result.paire1 + ' et ' + result.paire2;
+      case ValueName.PAIRE:
+        return 'Paire' + ' de ' + result.paire1;
+      case ValueName.QUINTE:
+        return 'Quinte' + ' de ' + result.quinte;
+      default:
+        return 'Aucun';
     }
   }
 

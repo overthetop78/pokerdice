@@ -5,8 +5,10 @@ import { UrlBackend } from './interfaces/url-backend';
 import { IUser } from './interfaces/i-user';
 import { Observable } from 'rxjs';
 import { ILobby } from './interfaces/i-lobby';
-import { ValidPlay } from './interfaces/i-player';
+import { IPlayer, ValidPlay } from './interfaces/i-player';
 import { ILobbyUser } from './interfaces/i-lobby-user';
+import { IDice } from './interfaces/i-dice';
+import { IUserResult } from './interfaces/i-user-result';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +77,22 @@ export class ServicesService {
 
   async startGame(lobbyId: number) {
     return this.http.get(`${UrlBackend.URL_BACKEND}/core/Game/StartGame/${lobbyId}`);
+  }
+
+  lockDice(dice: IDice) {
+    return this.http.patch(`${UrlBackend.URL_BACKEND}/core/Game/UpdateDices`, dice);
+  }
+
+  rollDices(me: IPlayer, secondLaunch: boolean) {
+    if (!secondLaunch) {
+      return this.http.get(`${UrlBackend.URL_BACKEND}/core/Game/FirstLaunch/${me.id}`);
+    } else {
+      return this.http.get(`${UrlBackend.URL_BACKEND}/core/Game/SecondLaunch/${me.id}`);
+    }
+  }
+
+  getResultDices(lobbyUserId: number, dices: IDice[]): Observable<IUserResult> {
+    return this.http.post<IUserResult>(`${UrlBackend.URL_BACKEND}/core/Game/CalculateDices/${lobbyUserId}`, dices);
   }
 
 }

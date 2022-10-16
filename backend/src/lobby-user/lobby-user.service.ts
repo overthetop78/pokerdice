@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserResult } from 'src/core/core';
-import { CoreResultDto } from 'src/core/dto/core-result.dto';
 import { Repository } from 'typeorm';
 import { CreateLobbyUserDto } from './dto/create-lobby-user.dto';
 import { ValidPlay } from './dto/lobby-user.dto';

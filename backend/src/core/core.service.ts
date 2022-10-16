@@ -6,22 +6,28 @@ import { DiceDto } from '../dices/dto/dice.dto';
 import { ValidPlay } from '../lobby-user/dto/lobby-user.dto';
 import { LobbyUser } from '../lobby-user/entities/lobby-user.entity';
 import { LobbyUserService } from '../lobby-user/lobby-user.service';
-import { Core, UserResult } from './core';
+import { Core } from './core';
 import { CreateCoreDto } from './dto/create-core.dto';
 import { UpdateCoreDto } from './dto/update-core.dto';
 import { CoreResultDto } from './dto/core-result.dto';
 import { LobbyService } from '../lobby/lobby.service';
+import { ApiProperty } from '@nestjs/swagger';
+import { UserResult } from './user-result.interface';
+import { CoreDiceDto } from './dto/core-dice.dto';
 
 export class MyDice {
+  @ApiProperty({ required: true, default: 0 })
   diceId: number;
+  @ApiProperty({ required: true, default: 0 })
   value: number;
+  @ApiProperty({ required: true, type: 'boolean', default: false })
   isLocked: boolean;
+  @ApiProperty({ required: true, default: 0 })
   lobbyUserId: number;
 }
 
 @Injectable()
 export class CoreService {
-
   dices: DiceDto[] = [];
 
   myDices: { lobbyUserId: number, diceId: number, value: number, isLocked: boolean }[] = [];
@@ -121,26 +127,30 @@ export class CoreService {
     for (let i = 0; i < 5; i++) {
       this.dices.push({ lobbyUser: LobbyUser, diceId: i, value: Math.floor(Math.random() * 6) + 1, isLocked: false });
       this.myDices.push({ lobbyUserId: LobbyUser.id, diceId: i, value: this.dices[i].value, isLocked: false });
+      this.dicesService.create(this.dices[i]);
     }
     return this.myDices;
   }
 
   /**
    * @description Verrouille ou déverrouille un dé
-   * @param lobbyUserId Identifiant du joueur
-   * @param diceId Identifiant du dé
-   * @param isLocked Verrouillage du dé
    * @returns liste des dés du joueur
    */
-  async updateDices(lobbyUserId: number, diceId: number, isLocked: boolean): Promise<MyDice[]> {
-    const LobbyUser = await this.lobbyUserService.findOne(lobbyUserId);
-    if (isLocked) {
-      this.dices[diceId].isLocked = isLocked;
-      this.myDices[diceId].isLocked = isLocked;
-    } else {
-      this.dices[diceId].isLocked = !isLocked;
-      this.myDices[diceId].isLocked = !isLocked;
-    }
+  async updateDices(dice: MyDice): Promise<MyDice[]> {
+    const lobbyUser = await this.lobbyUserService.findOne(dice.lobbyUserId);
+    let diceDto: DiceDto = {
+      lobbyUser: lobbyUser,
+      diceId: dice.diceId,
+      value: dice.value,
+      isLocked: dice.isLocked,
+    };
+    this.dicesService.create(diceDto);
+    this.dices = await this.dicesService.findAllByLobbyUserId(dice.lobbyUserId);
+    this.myDices = [];
+    this.dices.forEach(dice => {
+      this.myDices.push({ lobbyUserId: lobbyUser.id, diceId: dice.diceId, value: dice.value, isLocked: dice.isLocked });
+    });
+    this.myDices[dice.diceId].isLocked = dice.isLocked;
     return this.myDices;
   }
 
@@ -149,15 +159,22 @@ export class CoreService {
    * @param lobbyUserId Identifiant du joueur
    * @returns liste des dés du joueur
    */
-  async SecondLaunchDices(lobbyUserId: number): Promise<LobbyUser> {
-    const Dices = await this.dicesService.findOneByLobbyUserId(lobbyUserId);
-    for (let i = 0; i < this.dices.length; i++) {
-      if (!this.dices[i].isLocked) {
-        this.dices[i].value = Math.floor(Math.random() * 6) + 1;
-        this.dicesService.create(this.dices[i]);
+  async SecondLaunchDices(lobbyUserId: number): Promise<MyDice[]> {
+    const Dices: Dice[] = await this.dicesService.findAllByLobbyUserId(lobbyUserId);
+    this.myDices = [];
+    for (const dice of Dices) {
+      if (dice.isLocked === false) {
+        dice.value = Math.floor(Math.random() * 6) + 1;
       }
+      dice.isLocked = false;
+      this.dicesService.create(dice);
+      this.myDices.push({ lobbyUserId: lobbyUserId, diceId: dice.diceId, value: dice.value, isLocked: dice.isLocked });
     }
-    return await this.lobbyUserService.findOne(lobbyUserId);
+    return this.myDices
+  }
+
+  CalculateDices(lobbyUserId: number, dices: CoreDiceDto[]): UserResult {
+    return this.core.CalculateDices(lobbyUserId, dices);
   }
 
 

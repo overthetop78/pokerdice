@@ -2,12 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DicesService } from '../dices/dices.service';
 import { LobbyUserService } from '../lobby-user/lobby-user.service';
 import { DicesController } from '../dices/dices.controller';
-import { DicesModule } from '../dices/dices.module';
-import { LobbyUserModule } from '../lobby-user/lobby-user.module';
-import { Core, SearchBrelan, SearchCarre, SearchPaire, SearchQuinte, SearchSuite, UserResult, ValueName } from './core';
 import { CoreController } from './core.controller';
 import { CoreService } from './core.service';
-import { CoreModule } from './core.module';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { LobbyUser } from '../lobby-user/entities/lobby-user.entity';
 import { LobbyUserController } from '../lobby-user/lobby-user.controller';
@@ -17,8 +13,15 @@ import { ValidPlay } from '../lobby-user/dto/lobby-user.dto';
 import { CoreResultDto } from './dto/core-result.dto';
 import { Lobby } from '../lobby/entities/lobby.entity';
 import { LobbyService } from '../lobby/lobby.service';
-import { LobbyController } from '../lobby/lobby.controller';
 import { UserService } from '../user/user.service';
+import { Core } from './core';
+import { SearchBrelan } from './search-brelan';
+import { SearchCarre } from './search-carre';
+import { SearchPaire } from './search-paire';
+import { SearchQuinte } from './search-quinte';
+import { SearchSuite } from './search-suite';
+import { UserResult } from './user-result.interface';
+import { ValueName } from './value-name.enum';
 
 describe('CoreController', () => {
   let controller: CoreController;
@@ -360,8 +363,8 @@ describe('CoreController', () => {
           ]
         }
       ],
-      createdAt: new Date('2021-05-01T00:00:00.000Z'),
-      updatedAt: new Date('2021-05-01T00:00:00.000Z'),
+      //createdAt: new Date('2021-05-01T00:00:00.000Z'),
+      //updatedAt: new Date('2021-05-01T00:00:00.000Z'),
     };
 
     const result = core.CalculateScore(lobbyTest);
@@ -476,8 +479,8 @@ describe('CoreController', () => {
           ]
         }
       ],
-      createdAt: new Date('2021-05-01T00:00:00.000Z'),
-      updatedAt: new Date('2021-05-01T00:00:00.000Z'),
+      //createdAt: new Date('2021-05-01T00:00:00.000Z'),
+      //updatedAt: new Date('2021-05-01T00:00:00.000Z'),
     };
 
     const result = core.CalculateScore(lobbyTest);
@@ -592,8 +595,8 @@ describe('CoreController', () => {
           ]
         }
       ],
-      createdAt: new Date('2021-05-01T00:00:00.000Z'),
-      updatedAt: new Date('2021-05-01T00:00:00.000Z'),
+      //createdAt: new Date('2021-05-01T00:00:00.000Z'),
+      //updatedAt: new Date('2021-05-01T00:00:00.000Z'),
     };
 
     const result = core.CalculateScore(lobbyTest);
@@ -708,8 +711,8 @@ describe('CoreController', () => {
           ]
         }
       ],
-      createdAt: new Date('2021-05-01T00:00:00.000Z'),
-      updatedAt: new Date('2021-05-01T00:00:00.000Z'),
+      //createdAt: new Date('2021-05-01T00:00:00.000Z'),
+      //updatedAt: new Date('2021-05-01T00:00:00.000Z'),
     };
 
     const result = core.CalculateScore(lobbyTest);

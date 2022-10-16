@@ -33,6 +33,7 @@ import { CreateLobbyComponent } from './create-lobby/create-lobby.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { LobbyPasswordComponent } from './lobby-password/lobby-password.component';
 import { GameComponent } from './game/game.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -76,6 +77,7 @@ const materialComponents = [
         ReactiveFormsModule,
         HttpClientModule,
         ...materialComponents,
+        FontAwesomeModule,
     ],
     providers: [{ provide: 'HTTP_INTERCEPTOR', useClass: AuthInterceptor, multi: true },],
     bootstrap: [AppComponent]

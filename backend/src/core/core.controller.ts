@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { DiceDto } from '../dices/dto/dice.dto';
-import { CoreService } from './core.service';
+import { CoreService, MyDice } from './core.service';
+import { CoreDiceDto } from './dto/core-dice.dto';
 import { CreateCoreDto } from './dto/create-core.dto';
 import { UpdateCoreDto } from './dto/update-core.dto';
 
@@ -42,28 +43,31 @@ export class CoreController {
 
   @Get('Game/FirstLaunch/:lobbyUserId')
   @ApiParam({ name: 'lobbyUserId', type: Number })
-  FirstLaunch(@Param('lobbyUserId') lobbyUserId: string) {
+  FirstLaunch(@Param('lobbyUserId') lobbyUserId: string): Promise<MyDice[]> {
     return this.coreService.FirstLaunchDices(+lobbyUserId);
   }
 
-  @Patch('Game/UpdateDices/:lobbyUserId/:diceId')
-  @ApiParam({ name: 'lobbyUserId', type: Number })
-  @ApiParam({ name: 'diceId', type: Number })
-  @ApiParam({ name: 'isLocked', type: Boolean })
+  @Patch('Game/UpdateDices',)
+  @ApiBody({ type: MyDice })
   UpdateDice(
-    @Param('lobbyUserId') lobbyUserId: string,
-    @Param('diceId') diceId: string,
-    @Param('isLocked') isLocked: boolean,
+    @Body() dice: MyDice,
   ) {
-    return this.coreService.updateDices(+lobbyUserId, +diceId, isLocked);
+    return this.coreService.updateDices(dice);
   }
 
-  @Patch('Game/UpdateDices/:lobbyUserId')
+  @Get('Game/SecondLaunch/:lobbyUserId')
   @ApiParam({ name: 'lobbyUserId', type: Number })
-  UpdateDices(
-    @Param('lobbyUserId') lobbyUserId: string,
+  SecondLaunch(
+    @Param('lobbyUserId') lobbyUserId: number,
   ) {
     return this.coreService.SecondLaunchDices(+lobbyUserId);
+  }
+
+  @Post('Game/CalculateDices/:lobbyUserId')
+  @ApiParam({ name: 'lobbyUserId', type: Number })
+  @ApiBody({ type: [CoreDiceDto] })
+  CalculateDices(@Param('lobbyUserId') lobbyUserId: number, @Body() dices: CoreDiceDto[]) {
+    return this.coreService.CalculateDices(lobbyUserId, dices);
   }
 
   @Get('Game/CalculateScore/:lobbyId')

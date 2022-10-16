@@ -15,10 +15,13 @@
                     </mat-card-header>
                     <mat-card-content>
                         <div class="player-info">
+                            <div class="player-tour">Tour : {{ player.tour }} <mat-icon>{{ getLogo(player.validPlay) }}
+                                </mat-icon>
+                            </div>
                             <div class="player-points">
                                 <table>
                                     <tr>
-                                        <th>Position</th>
+                                        <th>Pos</th>
                                         <th>Score</th>
                                     </tr>
                                     <tr>
@@ -28,7 +31,7 @@
                                 </table>
                             </div>
                             <div class="player-score">
-                                <table>
+                                <table class="player-score">
                                     <tr>
                                         <th>Win</th>
                                         <th>Lose</th>
@@ -41,13 +44,89 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="player-tour">Tour : {{ player.tour }}</div>
-                            <div class="player-validPlay">
-                                <mat-icon>{{ getLogo(player.validPlay) }}</mat-icon>
+                            <div class="player-dices">
+                                <table class="player-dices">
+                                    <tr>
+                                        <td *ngIf="player.dices.length === 0">
+                                            <fa-icon [icon]="faDice"></fa-icon>
+                                        </td>
+                                        <td *ngIf="player.dices.length === 0">
+                                            <fa-icon [icon]="faDice"></fa-icon>
+                                        </td>
+                                        <td *ngIf="player.dices.length === 0">
+                                            <fa-icon [icon]="faDice"></fa-icon>
+                                        </td>
+                                        <td *ngIf="player.dices.length === 0">
+                                            <fa-icon [icon]="faDice"></fa-icon>
+                                        </td>
+                                        <td *ngIf="player.dices.length === 0">
+                                            <fa-icon [icon]="faDice"></fa-icon>
+                                        </td>
+                                        <td *ngFor="let dice of player.dices">
+                                            <fa-icon [icon]="getDice(dice)"></fa-icon>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="player-dices">Dices : {{ player.dices }}</div>
                         </div>
                     </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="board">
+                <mat-card class="board">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h1>
+                                Tour: {{ me.tour }}
+                                <mat-icon>{{ getLogo(me.validPlay) }} </mat-icon>
+                            </h1>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="board-info">
+                            <table>
+                                <tr>
+                                    <td *ngIf="me.dices.length === 0">
+                                        <fa-icon [icon]="faDice"></fa-icon>
+                                    </td>
+                                    <td *ngIf="me.dices.length === 0">
+                                        <fa-icon [icon]="faDice"></fa-icon>
+                                    </td>
+                                    <td *ngIf="me.dices.length === 0">
+                                        <fa-icon [icon]="faDice"></fa-icon>
+                                    </td>
+                                    <td *ngIf="me.dices.length === 0">
+                                        <fa-icon [icon]="faDice"></fa-icon>
+                                    </td>
+                                    <td *ngIf="me.dices.length === 0">
+                                        <fa-icon [icon]="faDice"></fa-icon>
+                                    </td>
+                                    <td *ngFor="let dice of me.dices">
+                                        <div>
+                                            <fa-icon [icon]="getDice(dice)">
+                                            </fa-icon>
+                                        </div>
+                                        <button mat-raised-button color="primary" *ngIf="secondLaunch"
+                                            (click)="switchDice(dice)">
+                                            {{ DiceState(dice.isLocked) }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="dices-result">
+                                {{ getResultName(result)}}
+                            </div>
+                            <div class="dices-roll">
+                                <button mat-raised-button color="primary" *ngIf="!secondLaunch" (click)="rollDices()">
+                                    Roll dices
+                                </button>
+                                <button mat-raised-button color="primary" *ngIf="secondLaunch" (click)="rollDices()">
+                                    ReRoll dices
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+
                 </mat-card>
             </div>
         </mat-card-content>
