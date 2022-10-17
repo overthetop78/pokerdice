@@ -19,7 +19,7 @@ import { DicesModule } from './dices/dices.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_HOST || 'locahost',
-      port: parseInt(process.env.MYSQL_PORT_IN) || 3306,
+      port: parseInt(process.env.MYSQL_PORT_OUT) || 3306,
       username: process.env.MYSQL_USER || 'pokerdice',
       password: process.env.MYSQL_PASSWORD || 'pokerdice',
       database: process.env.MYSQL_DATABASE || 'pokerdice',
