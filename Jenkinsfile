@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'cd backend && npm test core.controller.spec.ts -- --ci --watchAll=false
+                sh 'cd backend && npm test core.controller.spec.ts
 
 '
             }
