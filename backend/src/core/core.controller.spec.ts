@@ -22,6 +22,7 @@ import { SearchQuinte } from './search-quinte';
 import { SearchSuite } from './search-suite';
 import { UserResult } from './user-result.interface';
 import { ValueName } from './value-name.enum';
+import { AppModule } from '../app.module';
 
 describe('CoreController', () => {
   let controller: CoreController;
@@ -35,32 +36,32 @@ describe('CoreController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [Core, Dice, LobbyUser, Lobby, User],
-      controllers: [CoreController, DicesController, LobbyUserController],
-      providers: [
-        CoreService,
-        Core,
-        DicesService,
-        LobbyService,
-        UserService,
-        LobbyUserService, {
-          provide: getRepositoryToken(LobbyUser),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Dice),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Lobby),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(User),
-          useValue: {},
-        },
+      imports: [Core, Dice, LobbyUser, Lobby, User, AppModule],
+      // controllers: [CoreController, DicesController, LobbyUserController],
+      // providers: [
+      //   CoreService,
+      //   Core,
+      //   DicesService,
+      //   LobbyService,
+      //   UserService,
+      //   LobbyUserService, {
+      //     provide: getRepositoryToken(LobbyUser),
+      //     useValue: {},
+      //   },
+      //   {
+      //     provide: getRepositoryToken(Dice),
+      //     useValue: {},
+      //   },
+      //   {
+      //     provide: getRepositoryToken(Lobby),
+      //     useValue: {},
+      //   },
+      //   {
+      //     provide: getRepositoryToken(User),
+      //     useValue: {},
+      //   },
 
-      ],
+      // ],
     }).compile();
 
     controller = module.get<CoreController>(CoreController);
