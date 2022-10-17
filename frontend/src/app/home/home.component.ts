@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, FormControlName, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControlName, FormGroup, Validators, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CreateLobbyComponent } from '../create-lobby/create-lobby.component';
@@ -63,29 +63,17 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  Login() {
-    console.log(this.loginForm.value);
-    this.service.login(this.loginForm.value).subscribe((res: any) => {
-      console.log(res);
-      localStorage.setItem('access-token', res.access_token);
-      localStorage.setItem('email', res.email);
-      this.isConnected = true;
-      this.user = this.GetUser(res.email);
-      this.getLobbies();
-    }
-    );
-  }
-
-  Register() {
-    this.router.navigate(['register'])
-  }
-
   GetUser(email: string): IUser {
     this.service.getUser(email).toPromise().then(async (res: any) => {
       this.user = await res;
     });
     return this.user;
   }
+
+  Register() {
+    this.router.navigate(['register'])
+  }
+
 
   logout() {
     localStorage.removeItem('access-token')
@@ -179,4 +167,18 @@ export class HomeComponent implements OnInit {
     return false;
   }
 
+  Login() {
+    console.log(this.loginForm.value);
+    if (this.loginForm.value) {
+      let connection = this.loginForm.value;
+      this.service.login(this.loginForm.value).subscribe((res: any) => {
+        console.log(res);
+        localStorage.setItem('access-token', res.access_token);
+        localStorage.setItem('email', res.email);
+        this.isConnected = true;
+        this.user = this.GetUser(res.email);
+        this.getLobbies();
+      });
+    }
+  }
 }
