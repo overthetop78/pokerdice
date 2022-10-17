@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'cd backend && npm test /backend/src/core/core.service.spec.ts/'
+                sh 'cd backend && npm test core.service.spec.ts'
             }
         }
     }
