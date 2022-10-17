@@ -11,3 +11,5 @@ ADD . .
 RUN npm run build
 
 CMD ["node", "dist/src/main"]
+
+EXPOSE 3003
