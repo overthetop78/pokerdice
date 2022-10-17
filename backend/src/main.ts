@@ -27,13 +27,13 @@ async function bootstrap() {
       },
       'access-token',
     )
-    .addServer('http://localhost:3000')
-    .addServer('http://192.168.0.3:3000')
+    .addServer(`http://localhost:${process.env.APP_PORT_IN}`)
+    .addServer(`http://192.168.0.3:${process.env.APP_PORT_IN}`)
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT_IN || 3003);
 }
 bootstrap();
