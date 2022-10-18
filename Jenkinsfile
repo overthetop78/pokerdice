@@ -14,13 +14,6 @@ pipeline {
                 sh 'cd backend && npm install'
             }
         }
-        stage('SonarQube analysis') {
-            step {
-                withSonarQubeEnv('sonarqube') {
-                    sh 'cd backend && sonar-scanner'
-                }
-            }
-        }
         stage('Test') {
             steps {
                 sh 'cd backend && npm test core.controller.spec.ts'
