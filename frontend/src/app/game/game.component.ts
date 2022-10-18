@@ -237,11 +237,16 @@ export class GameComponent implements OnInit {
     });
   }
 
+  GetFirstPlayer(lobby: ILobby) {
+    // TODO : Trouver le premier joueur
+
+  }
+
   NextPlayer(lobby: ILobby) {
     console.log("Next player", lobby);
     console.log("Next player", this.me);
 
-    //TODO: Mettre le User en attente
+    //Mettre le User en attente
     this.me.tour += 1;
     this.me.validPlay = ValidPlay.WAITING_TOUR;
     this.service.patchLobbyUser(this.me.id, this.me).toPromise().then((res: any) => {
@@ -250,12 +255,34 @@ export class GameComponent implements OnInit {
       console.log(err);
       this.openErrorDialog();
     });
-    //TODO: Rechercher le prochain joueur qui peut jouer
 
-    //TODO: Mettre le prochain User en en train de jouer
+    //Rechercher le prochain joueur qui peut jouer
+    //Mettre le prochain User en en train de jouer
+    lobby.users.forEach(user => {
+      if (user.tour < this.me.tour && user.validPlay == ValidPlay.WAITING_TOUR && user.position == this.me.position + 1) {
+        user.validPlay = ValidPlay.PLAYING;
+        this.service.patchLobbyUser(user.id, user).toPromise().then((res: any) => {
+          console.log("User updated", res);
+        }
+        ).catch((err: Error) => {
+          console.log(err);
+          this.openErrorDialog();
+        }
+        );
+      }
+      else if (user.tour >= this.me.tour && user.validPlay == ValidPlay.WAITING_TOUR && user.position == 1) {
+        user.validPlay = ValidPlay.PLAYING;
+        this.service.patchLobbyUser(user.id, user).toPromise().then((res: any) => {
+          console.log("User updated", res);
+        }
+        ).catch((err: Error) => {
+          console.log(err);
+          this.openErrorDialog();
+        }
+        );
+      }
 
-
-
+    });
   }
 
 }
