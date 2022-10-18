@@ -95,4 +95,8 @@ export class ServicesService {
     return this.http.post<IUserResult>(`${UrlBackend.URL_BACKEND}/core/Game/CalculateDices/${lobbyUserId}`, dices);
   }
 
+  patchLobbyUser(lobbyUserId: number, data: any) {
+    return this.http.patch(`${UrlBackend.URL_BACKEND}/lobby-user/${lobbyUserId}`, data);
+  }
+
 }

@@ -117,10 +117,12 @@
                                 {{ getResultName(result)}}
                             </div>
                             <div class="dices-roll">
-                                <button mat-raised-button color="primary" *ngIf="!secondLaunch" (click)="rollDices()">
+                                <button mat-raised-button color="primary"
+                                    *ngIf="!secondLaunch && me.validPlay == 'PLAYING'" (click)="rollDices()">
                                     Roll dices
                                 </button>
-                                <button mat-raised-button color="primary" *ngIf="secondLaunch" (click)="rollDices()">
+                                <button mat-raised-button color="primary"
+                                    *ngIf="secondLaunch && me.validPlay == 'PLAYING'" (click)="rollDices()">
                                     ReRoll dices
                                 </button>
                             </div>

@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
 
   isConnected = false;
   isAwaitToPlayer = false;
+  userInGame: boolean = false;
 
   user: IUser = {
     username: '',
@@ -86,6 +87,7 @@ export class HomeComponent implements OnInit {
     this.service.getLobbies().toPromise().then(async (res: any) => {
       this.lobbies = await res;
       console.log(this.lobbies);
+      this.userInGame = this.GetUserInGame(this.lobbies);
 
     });
   }
@@ -181,4 +183,28 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
+  GetUserInGame(lobbies: ILobby[]): boolean {
+    let userInGame = false;
+    lobbies.forEach(lobby => {
+      if (!userInGame) {
+        lobby.users.forEach(user => {
+          if (!userInGame) {
+            if (user.user.id == this.user.id) {
+              userInGame = true;
+              if (user.validPlay == ValidPlay.ACCEPTED || user.validPlay == ValidPlay.WAITING_PLAYING) {
+                this.router.navigate(['lobby', lobby.id]);
+              }
+              else if (user.validPlay == ValidPlay.WAITING_TOUR || user.validPlay == ValidPlay.PLAYING) {
+                this.router.navigate(['game', lobby.id]);
+              }
+            }
+          }
+        });
+      }
+    });
+
+    return userInGame;
+  }
+
 }
