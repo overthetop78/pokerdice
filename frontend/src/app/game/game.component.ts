@@ -18,7 +18,7 @@ import { ValueName } from '../services/interfaces/value-name.enum';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.css', './game2.component.css']
 })
 export class GameComponent implements OnInit {
 
