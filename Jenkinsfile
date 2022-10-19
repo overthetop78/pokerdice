@@ -31,6 +31,7 @@ pipeline {
         }
         stage('Test Frontend') {
             steps {
+                sh 'export CHROME_BIN=/usr/bin/google-chrome-stable'
                 sh 'cd frontend && npm test'
             }
         }
